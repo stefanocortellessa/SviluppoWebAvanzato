@@ -2,8 +2,10 @@
 $(document).ready(function () {
     
     $("#events").hide(); 
-    $("#eventDetail").hide();
+    $("#Detail").hide();
     $("#choice").hide();
+    $("#attractions").hide();
+    
     
 
     localStorage.removeItem('token');
@@ -28,16 +30,15 @@ $(document).ready(function () {
                         
                         var list = '<article class="style1">';
                         list = list +   '<span class="image">' + 
-                                            '<img src="images/pic01.jpg" alt=""/>' +
+                                            '<img src="images/grey.jpg" height="300"alt=""/>' +
                                         '</span>' + 
                                         '<a>' +
-                                            '<h2 id="prova" onclick="detail(' + events[i].id + ')" >' + events[i].title + '</h2>' +
+                                            '<h2 id="prova" onclick="eventDetail(' + events[i].id + ')" >' + events[i].title + '</h2>' +
                                             '<div class="content">' + 
                                                 '<p>' + events[i].locality + '</p>' +
                                             '</div>' +
                                         '</a>' +
-                                        //'<p><button id="prova" class="button" onclick="detail(' + events[i].id + ')" >' + events[i].title + '</button></p>' + 
-                                    '</article>';
+                                        '</article>';
 
                         $("#events").append(list);
                     }
@@ -55,10 +56,57 @@ $(document).ready(function () {
         });
     };
 
+
+    var listAttractions = function() {
+
+        $.ajax( {
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            }, 
+            type: "GET",
+            dataType: 'json',
+            url: "http://localhost:8080/attractionmanager/api/attraction/attractions",
+            success: function(data) { 
+
+                var attractions = JSON.parse(JSON.stringify(data));
+                $("#attractions").empty();
+
+                if(attractions.length > 0) {
+                    for(i = 0; i < attractions.length; i++) {
+                        
+                        var list = '<article class="style1">';
+                        list = list +   '<span class="image">' + 
+                                            '<img src="images/grey.jpg" height="300"alt=""/>' +
+                                        '</span>' + 
+                                        '<a>' +
+                                            '<h2 id="prova" onclick="attractionDetail(' + attractions[i].id + ')" >' + attractions[i].name + '</h2>' +
+                                            '<div class="content">' + 
+                                                '<p>' + attractions[i].locality + '</p>' +
+                                            '</div>' +
+                                        '</a>' +
+                                        '</article>';
+
+                        $("#attractions").append(list);
+                    }
+                }
+                else {
+                    var h1 = '<h1>Non ci sono ancora attrazioni.</h1>';
+                    $("#attractions").append(h1);
+                }
+            },
+            error: function(x, m) {
+                console.log(x);
+                console.log(m);
+                alert('error!');
+            }
+        });
+    };
+
     //logo
     $("#logo").click(function() {
 
-        $("#eventDetail").hide();
+        $("#Detail").hide();
         $("#events").hide();
         $("#choice").show(); 
     });
@@ -70,6 +118,15 @@ $(document).ready(function () {
         $("#events").show();
 
         listEvents();   
+    });
+
+    //scelta attrazione
+    $("#attractionChoice").click(function() {
+
+        $("#choice").hide();
+        $("#attractions").show();
+
+        listAttractions();   
     });
 
 

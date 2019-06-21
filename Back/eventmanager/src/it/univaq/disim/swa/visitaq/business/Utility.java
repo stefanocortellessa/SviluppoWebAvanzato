@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class Utility {
 
@@ -46,5 +49,18 @@ public class Utility {
 				}
 			}
 		}
+	}
+	
+	//Method that converts date from XMLGregorianCalendar to Date
+	public Date convertDate(XMLGregorianCalendar calendar){
+
+		if(calendar == null) {
+			return null;
+		}
+
+		Date date = (Date) calendar.toGregorianCalendar().getTime();
+		date.setTime(date.getTime() - 3600 * 1000);
+
+		return date;
 	}
 }

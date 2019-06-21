@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -63,8 +64,8 @@ public class EventManagerServiceImpl implements EventManagerService {
 			
 			ps.setString(1, event.getTitle());
 			ps.setString(2, event.getLocality());
-			ps.setDate(3, (Date) event.getStartDate());
-			ps.setDate(4, (Date) event.getEndDate());
+			ps.setTimestamp(3, (Timestamp) event.getStartDate());
+			ps.setTimestamp(4, (Timestamp) event.getEndDate());
 			ps.setLong(5, event.getCategory().getId());
 			ps.setLong(6, event.getCreator().getId());
 			ps.setString(7, event.getLat());
@@ -164,8 +165,8 @@ public class EventManagerServiceImpl implements EventManagerService {
 
 				ps.setString(1, event.getTitle());
 				ps.setString(2, event.getLocality());
-				ps.setDate(3, event.getStartDate());
-				ps.setDate(4, event.getEndDate());
+				ps.setTimestamp(3, (Timestamp) event.getStartDate());
+				ps.setTimestamp(4, (Timestamp) event.getEndDate());
 				ps.setLong(5, event.getCategory().getId());
 				ps.setLong(6, event.getCreator().getId());
 				ps.setString(7, event.getLat());
@@ -225,8 +226,8 @@ public class EventManagerServiceImpl implements EventManagerService {
 				event.setId(rs.getLong("id"));
 				event.setTitle(rs.getString("title"));
 				event.setLocality(rs.getString("locality"));
-				event.setStartDate(rs.getDate("startDate"));
-				event.setEndDate(rs.getDate("endDate"));
+				event.setStartDate(rs.getTimestamp("startDate"));
+				event.setEndDate(rs.getTimestamp("endDate"));
 				event.setCategoryId(rs.getLong("id_category"));
 				event.setCreatorId(rs.getLong("id_creator"));
 				
@@ -272,8 +273,8 @@ public class EventManagerServiceImpl implements EventManagerService {
 				event.setId(rs.getLong("id"));
 				event.setTitle(rs.getString("title"));
 				event.setLocality(rs.getString("locality"));
-				event.setStartDate(rs.getDate("startDate"));
-				event.setEndDate(rs.getDate("endDate"));
+				event.setStartDate(rs.getTimestamp("startDate"));
+				event.setEndDate(rs.getTimestamp("endDate"));
 				event.setCategoryId(rs.getLong("id_category"));
 				event.setCreatorId(rs.getLong("id_creator"));
 				

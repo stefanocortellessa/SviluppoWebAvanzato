@@ -32,8 +32,8 @@ public class RESTEventManager {
 	@Produces("application/json")
 	public Response getAllEvents() {
 		try {
-			List<Event> attractions = service.selectEvents();
-			return Response.ok(attractions).build();
+			List<Event> events = service.selectEvents();
+			return Response.ok(events).build();
 		} catch (EventManagerBusinessException e) {
 			throw new EventManagerWebApplicationException("Errore interno al server");
 		}
@@ -46,6 +46,7 @@ public class RESTEventManager {
 	public Response getEventById(@PathParam("id") Long id) {
 		try {
 			Event event = service.selectEventDetail(id);
+			
 			return Response.ok(event).build();
 		} catch (EventManagerBusinessException e) {
 			throw new EventManagerWebApplicationException("Errore interno al server");

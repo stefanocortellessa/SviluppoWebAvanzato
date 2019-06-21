@@ -1,7 +1,6 @@
 package it.univaq.disim.swa.visitaq.business;
 
 import java.util.List;
-import java.util.Map;
 
 import it.univaq.disim.swa.visitaq.domain.Attraction;
 

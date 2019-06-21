@@ -1,14 +1,15 @@
 package it.univaq.disim.swa.visitaq.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Event implements java.io.Serializable {
 
 	private Long id;
 	private String title;
 	private String locality;
-	private Date startDate;
-	private Date endDate;
+	private Timestamp startDate;
+	private Timestamp endDate;
 	private Category category;
 	private Long categoryId;
 	private User creator;
@@ -41,7 +42,7 @@ public class Event implements java.io.Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Date getStartDate() {
+	public Timestamp getStartDate() {
 		return startDate;	
 	}
 	public String getLocality() {
@@ -50,13 +51,13 @@ public class Event implements java.io.Serializable {
 	public void setLocality(String locality) {
 		this.locality = locality;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Timestamp startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public Timestamp getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
 	public String getLat() {

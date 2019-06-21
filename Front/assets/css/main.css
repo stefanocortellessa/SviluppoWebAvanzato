@@ -166,7 +166,7 @@ input, select, textarea {
 	}
 
 	p {
-		margin: 0 0 2em 0;
+		margin: 0 0 0.5em 0;
 	}
 
 	h1 {
@@ -201,7 +201,7 @@ input, select, textarea {
 	h2, h3, h4, h5, h6 {
 		font-weight: 900;
 		line-height: 1.5;
-		margin: 0 0 2em 0;
+		margin: 2em 0 2em 0;
 		text-transform: uppercase;
 		letter-spacing: 0.35em;
 	}
@@ -2035,7 +2035,7 @@ input, select, textarea {
 
 		ul.icons li {
 			display: inline-block;
-			padding: 1em 0 0 1em;
+			padding: 0.5em 0 0 1em;
 		}
 
 /* Form */
@@ -2047,7 +2047,7 @@ input, select, textarea {
 
 		form > :last-child {
 			margin-bottom: 0;
-			margin-top: 160px;
+			margin-top: 130px;
 			text-align: center;
 		}
 
@@ -2815,7 +2815,19 @@ input, select, textarea {
 
 	#header {
 		padding: 1em 0 0.1em 0 ;
-	}
+	}	
+
+		#header .logo2 {
+			display: block;
+			border-bottom: 0;
+			color: inherit;
+			font-weight: 900;
+			letter-spacing: 0.35em;
+			margin:  30px 2.5em 0;
+			text-decoration: none;
+			text-transform: uppercase;
+			display: inline-block;
+		}
 
 		#header .logo {
 			display: block;
@@ -2823,7 +2835,7 @@ input, select, textarea {
 			color: inherit;
 			font-weight: 900;
 			letter-spacing: 0.35em;
-			margin: 0 0 2.5em 0;
+			margin:  0 2.5em 2.5em 0;
 			text-decoration: none;
 			text-transform: uppercase;
 			display: inline-block;
@@ -3186,7 +3198,7 @@ input, select, textarea {
 			#footer > .inner .copyright {
 				width: 100%;
 				padding: 0;
-				margin-top: 5em;
+				margin-top: 2em;
 				list-style: none;
 				font-size: 0.8em;
 				color: rgba(88, 88, 88, 0.5);

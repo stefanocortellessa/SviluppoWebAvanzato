@@ -35,23 +35,21 @@ function eventDetail(eventId) {
                                         '<p><em><strong> The event is ending: </strong></em>' + endDate.toLocaleString() + '</p>' +
                                     '</div>' +
                                     '<div class="col-8">' + 
-                                        '<div id="map" style="width:100%;height:400px;"></div>' +
+                                        '<div id="map" style="width:100%;height:300px;"></div>' +
                                     '</div>' +
 		                        '</div>' + 
 		                    '</div>' +
 		                 '</div>';
 
                 $("#Detail").append(ev);
-
-                console.log('latitude: ' + event.lat);
-                console.log('longitude: ' + event.lng);
-
                 $("#map").hide();
 
-                var coordinate = new google.maps.LatLng(parseInt(event.lat), parseInt(event.lng));
+                var coordinate = new google.maps.LatLng(Number(event.lat), Number(event.lng));
+                console.log('coordinate: ' + coordinate);
                 var mapOptions = { zoom:14 , mapTypeId: google.maps.MapTypeId.ROADMAP, center: coordinate }
                 map = new google.maps.Map(document.getElementById('map'), mapOptions);
                 var marker = new google.maps.Marker({position: coordinate, map: map});
+
                 $("#map").show();
             },
             error: function(x, m) {
@@ -95,14 +93,23 @@ function attractionDetail(attractionId) {
                                         '<h1> More Info.. </h1>' +
                                         '<p><em><strong> Locality: </strong></em>' + attraction.locality + '</p>' +
                                     '</div>' +
+                                    '<div class="col-8">' + 
+                                        '<div id="map" style="width:100%;height:300px;"></div>' +
+                                    '</div>' +
                                 '</div>' + 
                             '</div>' +
                          '</div>';
 
-
-                console.log(att);
                 $("#Detail").append(att);
-                
+                $("#map").hide();
+
+                var coordinate = new google.maps.LatLng(Number(attraction.lat), Number(attraction.lng));
+                console.log('coordinate: ' + coordinate);
+                var mapOptions = { zoom:14 , mapTypeId: google.maps.MapTypeId.ROADMAP, center: coordinate }
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                var marker = new google.maps.Marker({position: coordinate, map: map});
+
+                $("#map").show();                
             },
             error: function(x, m) {
                 console.log(x);

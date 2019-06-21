@@ -5,6 +5,7 @@ $(document).ready(function () {
     $("#Detail").hide();
     $("#choice").hide();
     $("#attractions").hide();
+    $("#logout").hide();
 
     localStorage.removeItem('token');
 
@@ -127,6 +128,12 @@ $(document).ready(function () {
         listAttractions();   
     });
 
+     //logout
+    $("#logout").click(function() {
+
+        console.log('logout');
+    });
+
     //login
     $("#login").click(function() {
 
@@ -157,7 +164,7 @@ $(document).ready(function () {
 
                 $("#LoginRegistrazione").hide();
                 $("#choice").show();
-   
+                $("#logout").show();
                 //alert(data);
             },
             error: function(x, m) {

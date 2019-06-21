@@ -5,8 +5,6 @@ $(document).ready(function () {
     $("#Detail").hide();
     $("#choice").hide();
     $("#attractions").hide();
-    
-    
 
     localStorage.removeItem('token');
 
@@ -128,7 +126,6 @@ $(document).ready(function () {
 
         listAttractions();   
     });
-
 
     //login
     $("#login").click(function() {

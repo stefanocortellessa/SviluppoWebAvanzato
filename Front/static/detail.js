@@ -15,22 +15,44 @@ function eventDetail(eventId) {
             	$("#Detail").show();
                 var event = JSON.parse(JSON.stringify(data));
                 $("#Detail").empty();
-                
+
+                var startDate = new Date(event.startDate);
+                var endDate = new Date(event.endDate);
+
                 var ev = '<div id="wrapper">';
                 ev = ev +	'<div id="main">' +
 		                		'<div class="inner">' + 
-		                            '<h1>' + event.title + '</h1>' +
-		                            '<span class="image main"><img src="images/event.jpg" alt="" height="400px" /></span>' +
-		                            '<p>' + event.locality + '</p>' + 
-		                            '<p>' + event.description + '</p>' + 
-		                            '<p>' + event.startDate + '</p>' + 
-		                            '<p>' + event.endDate + '</p>' + 
+                                    '<div class="row">' +
+                                        '<div class="col-8">' +
+                                        '<h1>' + event.title + '</h1>' +
+                                        '<span class="image main"><img src="images/event.jpg" alt="" height="300px" /></span>' +
+                                        '<p>' + event.description + '</p>' +
+                                    '</div>' +
+                                    '<div class="col-4">' +
+                                        '<h1> More Info.. </h1>' +
+                                        '<p><em><strong> Locality: </strong></em>' + event.locality + '</p>' +
+                                        '<p><em><strong> The event is starting: </strong></em>' + startDate.toLocaleString() + '</p>' +
+                                        '<p><em><strong> The event is ending: </strong></em>' + endDate.toLocaleString() + '</p>' +
+                                    '</div>' +
+                                    '<div class="col-8">' + 
+                                        '<div id="map" style="width:100%;height:400px;"></div>' +
+                                    '</div>' +
 		                        '</div>' + 
 		                    '</div>' +
 		                 '</div>';
 
                 $("#Detail").append(ev);
-                
+
+                console.log('latitude: ' + event.lat);
+                console.log('longitude: ' + event.lng);
+
+                $("#map").hide();
+
+                var coordinate = new google.maps.LatLng(parseInt(event.lat), parseInt(event.lng));
+                var mapOptions = { zoom:14 , mapTypeId: google.maps.MapTypeId.ROADMAP, center: coordinate }
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                var marker = new google.maps.Marker({position: coordinate, map: map});
+                $("#map").show();
             },
             error: function(x, m) {
                 console.log(x);
@@ -63,12 +85,16 @@ function attractionDetail(attractionId) {
                 var att = '<div id="wrapper">';
                 att = att +   '<div id="main">' +
                                 '<div class="inner">' + 
-                                    '<h1>' + attraction.name + '</h1>' +
-                                    '<span class="image main"><img src="images/attraction.jpg" alt="" height="400px" /></span>' +
-                                    '<p>' + attraction.locality + '</p>' + 
-                                    '<p>' + attraction.description + '</p>' + 
-                                    '<p>' + attraction.lat + '</p>' + 
-                                    '<p>' + attraction.lng + '</p>' + 
+                                    '<div class="row">' +
+                                        '<div class="col-8">' +
+                                        '<h1>' + attraction.name + '</h1>' +
+                                        '<span class="image main"><img src="images/attraction.jpg" alt="" height="300px" /></span>' +
+                                        '<p>' + attraction.description + '</p>' +
+                                    '</div>' +
+                                    '<div class="col-4">' +
+                                        '<h1> More Info.. </h1>' +
+                                        '<p><em><strong> Locality: </strong></em>' + attraction.locality + '</p>' +
+                                    '</div>' +
                                 '</div>' + 
                             '</div>' +
                          '</div>';

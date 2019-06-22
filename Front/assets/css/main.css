@@ -10,6 +10,10 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+.margin-half {
+	margin-top: 170px;
+}
+
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, big, cite,
@@ -2047,7 +2051,7 @@ input, select, textarea {
 
 		form > :last-child {
 			margin-bottom: 0;
-			margin-top: 130px;
+			margin-top: 100px;
 			text-align: center;
 		}
 
@@ -2761,7 +2765,7 @@ input, select, textarea {
 
 				.tiles article {
 					width: calc(33.3333333333% - 1.25em);
-					margin: 0 0 0 2em;
+					margin: 0 1em 0 2em;
 				}
 
 		}

@@ -7,6 +7,9 @@ $(document).ready(function () {
     $("#attractions").hide();
     $("#logout").hide();
 
+    $("#BottoneRegistrazione").hide();
+    $("#LoginForm").hide();
+
     localStorage.removeItem('token');
 
     var listEvents = function() {
@@ -18,7 +21,7 @@ $(document).ready(function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/eventmanager/api/event/allEvents",
+            url: "http://localhost:8080/visitaq/api/events/" + localStorage.getItem('token'),
             success: function(data) { 
 
                 var events = JSON.parse(JSON.stringify(data));
@@ -51,6 +54,8 @@ $(document).ready(function () {
                 console.log(x);
                 console.log(m);
                 alert('error!');
+
+                home();
             }
         });
     };
@@ -65,7 +70,7 @@ $(document).ready(function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/attractionmanager/api/attraction/attractions",
+            url: "http://localhost:8080/visitaq/api/attractions/" + localStorage.getItem('token'),
             success: function(data) { 
 
                 var attractions = JSON.parse(JSON.stringify(data));
@@ -98,8 +103,24 @@ $(document).ready(function () {
                 console.log(x);
                 console.log(m);
                 alert('error!');
+
+                home();
             }
         });
+    };
+
+    var home = function(){
+        $("#events").hide(); 
+        $("#Detail").hide();
+        $("#choice").hide();
+        $("#attractions").hide();
+        $("#logout").hide();
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
+
+        $("#RegistrazioneForm").show();
+        $("#BottoneLogin").show();
+        $("#WelcomeDescription").show();
     };
 
     //logo
@@ -108,6 +129,26 @@ $(document).ready(function () {
         $("#Detail").hide();
         $("#events").hide();
         $("#choice").show(); 
+    });
+
+    //Bottone Login
+    $("#LoginButton").click(function() {
+
+        $("#RegistrazioneForm").hide();
+        $("#BottoneLogin").hide();
+
+        $("#BottoneRegistrazione").show();
+        $("#LoginForm").show();
+    });
+
+    //Bottone Registrazione
+    $("#RegistrationButton").click(function() {
+
+        $("#RegistrazioneForm").show();
+        $("#BottoneLogin").show();
+
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
     });
 
     //scelta evento
@@ -132,9 +173,6 @@ $(document).ready(function () {
     $("#logout").click(function() {
 
         console.log('logout');
-        var token = localStorage.getItem('token');
-
-        console.log('token : ' + token);
 
         $.ajax( { 
             headers: { 
@@ -143,10 +181,15 @@ $(document).ready(function () {
             },
             type: "DELETE",
             dataType: 'json',
-            url: "http://localhost:8080/accountmanager/api/account/logout/" + token,
+            url: "http://localhost:8080/visitaq/api/user/logout/" + localStorage.getItem('token'),
             success: function(data) { 
 
-                $("#LoginRegistrazione").show();
+                localStorage.removeItem('token')
+
+                $("#RegistrazioneForm").show();
+                $("#BottoneLogin").show();
+                $("#WelcomeDescription").show();
+
                 $("#events").hide();
                 $("#attractions").hide(); 
                 $("#Detail").hide();
@@ -157,6 +200,8 @@ $(document).ready(function () {
                 console.log(x);
                 console.log(m);
                 alert('error!');
+
+                home();
             }
         });
         return false;
@@ -193,14 +238,14 @@ $(document).ready(function () {
             }),
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8080/accountmanager/api/account/login",
+            url: "http://localhost:8080/visitaq/api/user/login",
             success: function(data) { 
 
                 localStorage['token'] = JSON.parse(JSON.stringify(data));
-                console.log(localStorage['token']);
-                //console.log(localStorage['token']);
-
-                $("#LoginRegistrazione").hide();
+                
+                $("#LoginForm").hide();
+                $("#BottoneRegistrazione").hide();
+                $("#WelcomeDescription").hide();
                 $("#choice").show();
                 $("#logout").show();
                 //alert(data);
@@ -209,6 +254,8 @@ $(document).ready(function () {
                 console.log(x);
                 console.log(m);
                 alert('error!');
+
+                home();
             }
         });
         return false;
@@ -254,7 +301,7 @@ $(document).ready(function () {
                 "password" : pass
             }),
             dataType: 'json',
-            url: "http://localhost:8080/accountmanager/api/account/insertUser",
+            url: "http://localhost:8080/visitaq/api/user/add",
             success: function(data) {  
                 
                 if(data == false){
@@ -263,9 +310,11 @@ $(document).ready(function () {
                     if(data == true){
                         alert('Complimenti! Sei registrato correttamente!');
 
-                        $("#LoginRegistrazione").hide();
-                        $("#choice").show();
-                        $("#logout").show();
+                        $("#RegistrazioneForm").hide();
+                        $("#BottoneLogin").hide();
+
+                        $("#BottoneRegistrazione").show();
+                        $("#LoginForm").show();
                     }
                 }      
             },
@@ -273,6 +322,8 @@ $(document).ready(function () {
                 console.log(x);
                 console.log(m);
                 alert('error!');
+
+                home();
             }
         });
         return false;

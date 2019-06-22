@@ -34,53 +34,66 @@
 				</div>
 			</header>
 
-			<div id="LoginRegistrazione">
-				<div class="inner">
-					<section class="tiles">
-						<article>
-							<h2>Login</h2>
-							<form method="post" action="#">
-								<div class="fields">
-									<div class="field">
-										<input type="email" name="email" id="email" placeholder="E-mail" />
-										<input type="password" name="password" id="password" placeholder="Password"></input>
-									</div>
+			
+			<div class="inner">
+				<section class="tiles">
+
+					<article id="BottoneRegistrazione" class="align-center">
+						<div class="margin-half">
+			                <input id="RegistrationButton" type="submit" value="Register" />
+			            </div>
+					</article>
+					<article id="BottoneLogin" class="align-center">
+						<div class="margin-half">
+			                <input id="LoginButton" type="submit" value="Login" />
+			            </div>
+					</article>
+
+					<article id="LoginForm">
+						<h2>Login</h2>
+						<form method="post" action="#">
+							<div class="fields">
+								<div class="field">
+									<input type="email" name="email" id="email" placeholder="E-mail" />
+									<input type="password" name="password" id="password" placeholder="Password"></input>
 								</div>
-								<div>
-					                <input id="login" type="submit" value="Log in" />
-					            </div>
-							</form>
-						</article>
+							</div>
+							<div>
+				                <input id="login" type="submit" value="Log in" />
+				            </div>
+						</form>
+					</article>
 					
-						<article>
-							<h2>Registrazione</h2>
-							<form method="post" action="#">
-								<div class="fields">
-									<div class="field">
-										<input type="text" name="name" id="name" placeholder="Name" />
-										<input type="text" name="surname" id="surname" placeholder="Surname" />
-										<input type="email" name="email" id="mail" placeholder="E-mail" />
-										<input type="password" name="password" id="pass" placeholder="Password"></input>
-									</div>
-								</div>
-								<div>
-					                <input id="registration" type="submit" value="Register" />
-					            </div>
-							</form>
-						</article>
 
-						<article>
-						<br>
-							<h1></h1>
-							<h3>Welcome back!</h3>
-
-								<div class="content">
-									<p>From this page you can log in filling in the dedicated form!</p>
-									<p>If you are not already registered don't waste time.. fill in the registration form.</p>
+					<article id="RegistrazioneForm">
+						<h2>Registrazione</h2>
+						<form method="post" action="#">
+							<div class="fields">
+								<div class="field">
+									<input type="text" name="name" id="name" placeholder="Name" />
+									<input type="text" name="surname" id="surname" placeholder="Surname" />
+									<input type="email" name="email" id="mail" placeholder="E-mail" />
+									<input type="password" name="password" id="pass" placeholder="Password"></input>
 								</div>
-						</article>
-					</section>
-				</div>
+							</div>
+							<div>
+				                <input id="registration" type="submit" value="Register" />
+				            </div>
+						</form>
+					</article>
+
+					<article id="WelcomeDescription">
+					<br>
+						<h1></h1>
+						<h3>Welcome back!</h3>
+
+							<div class="content">
+								<p>From this page you can log in filling</p> 
+								<p>in the dedicated form!
+								If you are not already registered don't waste time.. fill in the registration form.</p>
+							</div>
+					</article>
+				</section>
 			</div>
 
 			<div id="choice">
@@ -120,7 +133,7 @@
 			<div id="main">
 				<div class="inner">
 					<section id="events" class="tiles">
-						events
+						
 					</section>
 				</div>
 			</div>
@@ -128,13 +141,13 @@
 			<div id="main">
 				<div class="inner">
 					<section id="attractions" class="tiles">
-						attractions
+						
 					</section>
 				</div>
 			</div>
 			
 			<div id="Detail">
-				Detail
+				
 			</div>
 			
 			<!-- Footer -->

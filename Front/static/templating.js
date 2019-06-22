@@ -132,16 +132,52 @@ $(document).ready(function () {
     $("#logout").click(function() {
 
         console.log('logout');
+        var token = localStorage.getItem('token');
+
+        console.log('token : ' + token);
+
+        $.ajax( { 
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            },
+            type: "DELETE",
+            dataType: 'json',
+            url: "http://localhost:8080/accountmanager/api/account/logout/" + token,
+            success: function(data) { 
+
+                $("#LoginRegistrazione").show();
+                $("#events").hide();
+                $("#attractions").hide(); 
+                $("#Detail").hide();
+                $("#choice").hide();
+                $("#logout").hide();
+            },
+            error: function(x, m) {
+                console.log(x);
+                console.log(m);
+                alert('error!');
+            }
+        });
+        return false;
     });
 
     //login
-    $("#login").click(function() {
+    $("#login").click(function() { 
 
         console.log("login");
 
+        var message="";
         var email = $("#email").val();
         var password = $("#password").val();
         
+        if (email == "") message += "Inserire Email!\n";
+        if (password == "") message += "Inserire Password!";
+        if (message != "") {
+            alert(message);
+            return false;
+        }
+
         console.log("email: " + email);
         console.log("password: " + password);
 
@@ -156,11 +192,13 @@ $(document).ready(function () {
                 "password" : password
             }),
             dataType: 'json',
+            contentType: "application/json; charset=utf-8",
             url: "http://localhost:8080/accountmanager/api/account/login",
             success: function(data) { 
 
                 localStorage['token'] = JSON.parse(JSON.stringify(data));
                 console.log(localStorage['token']);
+                //console.log(localStorage['token']);
 
                 $("#LoginRegistrazione").hide();
                 $("#choice").show();
@@ -181,10 +219,22 @@ $(document).ready(function () {
 
         console.log("registration");
 
+        var message = "";
         var name = $("#name").val();
         var surname = $("#surname").val();
+        var validCharact = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         var mail = $("#mail").val();
         var pass = $("#pass").val();
+
+        if (name == "") message += "Inserire Nome!\n";
+        if (surname == "") message += "Inserire Cognome!\n";
+        if (mail == "") message += "Inserire Email!\n";
+        if (!validCharact.test(mail)) message += "Email non valida!\n";
+        if (pass == "") message += "Inserire Password!\n";
+        if (message != "") {
+            alert(message);
+            return false;
+        }
 
         console.log("namess: " + name);
         console.log("surnamess: " + surname);
@@ -212,6 +262,10 @@ $(document).ready(function () {
                 } else {
                     if(data == true){
                         alert('Complimenti! Sei registrato correttamente!');
+
+                        $("#LoginRegistrazione").hide();
+                        $("#choice").show();
+                        $("#logout").show();
                     }
                 }      
             },

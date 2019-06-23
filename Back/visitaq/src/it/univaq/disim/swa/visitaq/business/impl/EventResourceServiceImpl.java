@@ -28,7 +28,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				System.out.println("Errore Connessione");
+				//System.out.println("Errore Connessione");
 				e.printStackTrace();
 			}
 
@@ -36,10 +36,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 					+ "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone="
 					+ timeZone);
 
-			System.out.println("Connection established");
+			//System.out.println("Connection established");
 
 		} catch (Exception e) {
-			System.out.println("SQLException: " + e.getMessage());
+			//System.out.println("SQLException: " + e.getMessage());
 		}
 		return connection;
 	}
@@ -47,11 +47,11 @@ public class EventResourceServiceImpl implements EventResourceService {
 	@Override
 	public Event insertEvent(Event event) throws VisitaqBusinessException {
 
-		Connection connection = null;
-		Event response = new Event();
-
-		String query = "INSERT INTO events (title, locality, startDate, endDate, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
+		Connection connection = null;
+		
+		Event response = new Event();
+		String query = "INSERT INTO events (title, locality, startDate, endDate, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?,?,?)";
 		
 		try {
 
@@ -71,14 +71,12 @@ public class EventResourceServiceImpl implements EventResourceService {
 			ps.setString(9, event.getDescription());
 
 			ps.executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new VisitaqBusinessException("Something went wrong with Insert Event..");
 		} finally {
 			if (connection != null) {
-				try {
-					
+				try {		
 					connection.setAutoCommit(true);
 					connection.close();
 				} catch (SQLException e) {
@@ -100,11 +98,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 	@Override
 	public void deleteEvent(Long id, Event event) throws VisitaqBusinessException {
 		
+		PreparedStatement ps = null;
 		Connection connection = null;
 		Utility utility = new Utility();
-		
 		String query = "DELETE FROM events WHERE id = ?";
-		PreparedStatement ps = null;
 		
 		try {
 
@@ -114,12 +111,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 			if (utility.checkCreator(connection, id, event.getCreator().getId())) {
 			
 				ps = connection.prepareStatement(query);
-
 				ps.setLong(1, id);
-
 				ps.executeUpdate();
 			} else {
-				System.out.println("Event NOT Deleted: user is NOT its creator");
+				//System.out.println("Event NOT Deleted: user is NOT its creator");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -145,13 +140,13 @@ public class EventResourceServiceImpl implements EventResourceService {
 	@Override
 	public Event updateEvent(Event event, Long id) throws VisitaqBusinessException {
 		
+		PreparedStatement ps = null;
 		Connection connection = null;
+		
 		Event response = new Event();
 		Utility utility = new Utility();
-		
 		String query = "UPDATE events SET title=?, locality=?, startDate=?, endDate=?, id_category=?, id_creator=?, lat=?, lng=?, description=? WHERE id=?";
-		PreparedStatement ps = null;
-
+		
 		try {
 
 			connection = this.getConnection(connection);
@@ -171,10 +166,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 				ps.setString(8, event.getLng());
 				ps.setString(9, event.getDescription());
 				ps.setLong(10, id);
-				
 
 				ps.executeUpdate();
-
 			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -200,13 +193,14 @@ public class EventResourceServiceImpl implements EventResourceService {
 		return response;
 	}
 	
+	@Override
 	public Event selectEventDetail(Long id) {
 
+		PreparedStatement sql = null;
 		Connection connection = null;
 		
 		Event event = new Event();
 		String query = "SELECT * FROM events WHERE id=?";
-		PreparedStatement sql = null;
 
 		try {
 			
@@ -228,11 +222,9 @@ public class EventResourceServiceImpl implements EventResourceService {
 				event.setEndDate(rs.getTimestamp("endDate"));
 				event.setCategoryId(rs.getLong("id_category"));
 				event.setCreatorId(rs.getLong("id_creator"));
-				
 				event.setLat(rs.getString("lat"));
 				event.setLng(rs.getString("lng"));
 				event.setDescription(rs.getString("description"));
-				
 			}
 			return event;
 		} catch (SQLException e) {
@@ -247,14 +239,15 @@ public class EventResourceServiceImpl implements EventResourceService {
 		}
 	}
 	
+	@Override
 	public List<Event> selectEvents() {
 
+		PreparedStatement sql = null;
 		Connection connection = null;
 		List<Event> response = new ArrayList<Event>();
 		
 		String query = "SELECT * FROM events";
-		PreparedStatement sql = null;
-
+		
 		try {
 
 			connection = this.getConnection(connection);
@@ -275,14 +268,11 @@ public class EventResourceServiceImpl implements EventResourceService {
 				event.setEndDate(rs.getTimestamp("endDate"));
 				event.setCategoryId(rs.getLong("id_category"));
 				event.setCreatorId(rs.getLong("id_creator"));
-				
 				event.setLat(rs.getString("lat"));
 				event.setLng(rs.getString("lng"));
 				event.setDescription(rs.getString("description"));
 				response.add(event);	
-				
 			}
-			
 			rs.close(); 
 			
 			return response;

@@ -1,6 +1,5 @@
 package it.univaq.disim.swa.visitaq.domain;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Event implements java.io.Serializable {

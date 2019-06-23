@@ -21,22 +21,20 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	final private String timeZone = TimeZone.getTimeZone("Europe/Rome").getID();
 
 	public Connection getConnection(Connection connection) {
-
 		try {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				System.out.println("Errore Connessione");
+				//System.out.println("Errore Connessione");
 				e.printStackTrace();
 			}
-
 			connection = DriverManager.getConnection("jdbc:mysql://" + port + "?user=" + user + "&password=" + pwd
 					+ "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone="
 					+ timeZone);
 
 			//System.out.println("Connection established");
 		} catch (Exception e) {
-			System.out.println("SQLException: " + e.getMessage());
+			//System.out.println("SQLException: " + e.getMessage());
 		}
 		return connection;
 	}
@@ -79,7 +77,6 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 				userPs.setString(3, user.getEmail());
 				//password hashed using google.common.hash functions
 				userPs.setString(4, utility.hashPwd(user.getPassword()));
-	
 				userPs.executeUpdate();
 			}
 			response.setEmail(user.getEmail());
@@ -126,12 +123,10 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			ps = connection.prepareStatement(deleteSql);
 			ps.setLong(1, id);
 			
-			
 			if(ps.executeUpdate() == 1) {
-			
-				System.out.println("User deleted successfully!");
+				//System.out.println("User deleted successfully!");
 			}else {
-				System.out.println("User NOT deleted");
+				//System.out.println("User NOT deleted");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -176,10 +171,9 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			ps.setLong(5, userId);
 			
 			if(ps.executeUpdate() == 1) {
-			
-				System.out.println("User updated successfully!");
+				//System.out.println("User updated successfully!");
 			}else {
-				System.out.println("User NOT updated");
+				//System.out.println("User NOT updated");
 			}
 			response.setId(user.getId());
 		} catch (SQLException e) {
@@ -208,7 +202,6 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	public Session loginUser(User user) throws VisitaqBusinessException {
 		
 		Session response = new Session();
-
 		String selectUserSql = "SELECT * FROM users WHERE email = ?";
 		String sqlSession = "INSERT into sessions(token, user_id) VALUES(?,?)";
 		Utility utility = new Utility();
@@ -247,19 +240,15 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 				sessionPs.setString(1, token);
 				sessionPs.setLong(2, user.getId());
 
-				if(sessionPs.executeUpdate() == 1) {
-					
+				if(sessionPs.executeUpdate() == 1) {	
 					response.setId(idUtente);
 					response.setToken(token);
 				} else {
-					
 					response.setToken(null);
 				}
 			} else {
-				
 				response.setToken(null);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new VisitaqBusinessException("Something was wrong with User Login");
@@ -282,22 +271,21 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	@Override
 	public void logoutUser(String token) throws VisitaqBusinessException {
 
-		String sql = "DELETE FROM sessions WHERE token = ?";
 		Connection connection = null;
 		PreparedStatement ps = null;
+		
+		String sql = "DELETE FROM sessions WHERE token = ?";
 
 		try {			
 			connection = this.getConnection(connection);
 			
-			System.out.println("token: " + token);
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, token);
 			
 			if(ps.executeUpdate() == 1) {
-				
-				System.out.println("Logout Success");
+				//System.out.println("Logout Success");
 			} else {
-				System.out.println("Logout went Wrong");
+				//System.out.println("Logout went Wrong");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -320,12 +308,12 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	@Override
 	public Boolean checkSession(String token) throws VisitaqBusinessException {
 
-		String sql = "SELECT * FROM sessions WHERE token = ?";
-		
-		Boolean response;
 		Connection connection = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
+		String sql = "SELECT * FROM sessions WHERE token = ?";
+		Boolean response;
 
 		try {			
 			
@@ -339,10 +327,8 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			int num_rows = rs.getRow();
 
 			if(num_rows != 0) {
-			
 				response = true;
 			} else {
-				
 				response = false;
 			}
 		} catch (SQLException e) {

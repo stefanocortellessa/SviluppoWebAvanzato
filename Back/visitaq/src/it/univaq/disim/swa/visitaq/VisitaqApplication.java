@@ -22,7 +22,6 @@ public class VisitaqApplication extends ResourceConfig {
 				Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
 
 		//registrazione del provider per serializzazione/deserializzazione oggetti in json tramite jackson
-		register(JacksonJsonProvider.class);
-		
+		register(JacksonJsonProvider.class);	
 	}
 }

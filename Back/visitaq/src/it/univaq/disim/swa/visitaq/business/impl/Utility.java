@@ -50,7 +50,7 @@ public class Utility {
 			while (rs.next()) {
 				if (rs.getLong("id_creator") == creatorId) {
 
-					System.out.println("attraction creator identified");
+					//System.out.println("attraction creator identified");
 					return true;
 				} else {
 					return false;
@@ -75,7 +75,6 @@ public class Utility {
 		if(calendar == null) {
 			return null;
 		}
-
 		Date date = (Date) calendar.toGregorianCalendar().getTime();
 		date.setTime(date.getTime() - 3600 * 1000);
 

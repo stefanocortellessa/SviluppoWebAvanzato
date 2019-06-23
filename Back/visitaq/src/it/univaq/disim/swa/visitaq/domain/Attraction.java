@@ -13,7 +13,6 @@ public class Attraction implements java.io.Serializable {
 	private String lng;
 	private String description;
 	
-	
 	public String getDescription() {
 		return description;
 	}

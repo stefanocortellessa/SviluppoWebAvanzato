@@ -21,23 +21,19 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 	final private String timeZone = TimeZone.getTimeZone("Europe/Rome").getID();
 
 	public Connection getConnection(Connection connection) {
-
 		try {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				System.out.println("Errore Connessione");
+				//System.out.println("Errore Connessione");
 				e.printStackTrace();
 			}
-
 			connection = DriverManager.getConnection("jdbc:mysql://" + port + "?user=" + user + "&password=" + pwd
 					+ "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone="
 					+ timeZone);
-
-			System.out.println("Connection established");
-
+			//System.out.println("Connection established");
 		} catch (Exception e) {
-			System.out.println("SQLException: " + e.getMessage());
+			//System.out.println("SQLException: " + e.getMessage());
 		}
 		return connection;
 	}
@@ -45,11 +41,11 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 	@Override
 	public Attraction insertAttraction(Attraction attraction) throws VisitaqBusinessException {
 
-		Connection connection = null;
-		Attraction response = new Attraction();
-
-		String query = "INSERT INTO attractions (name, locality, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
+		Connection connection = null;
+		
+		Attraction response = new Attraction();
+		String query = "INSERT INTO attractions (name, locality, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?)";
 
 		try {
 
@@ -93,11 +89,11 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 	@Override
 	public void deleteAttraction(Long attractionId, Attraction attraction) throws VisitaqBusinessException {
 
-		Connection connection = null;
-		Utility utility = new Utility();
-		
-		String query = "DELETE FROM attractions WHERE id = ?";
 		PreparedStatement ps = null;
+		Connection connection = null;
+		
+		Utility utility = new Utility();
+		String query = "DELETE FROM attractions WHERE id = ?";
 		
 		try {
 
@@ -109,11 +105,10 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				ps = connection.prepareStatement(query);
 				
 				ps.setLong(1, attractionId);
-			
 				ps.executeUpdate();
-				System.out.println("Attraction Deleted");
+				//System.out.println("Attraction Deleted");
 			} else {
-				System.out.println("Attraction not Deleted : user is not its creator");
+				//System.out.println("Attraction not Deleted : user is not its creator");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,14 +133,13 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 	
 	@Override
 	public Attraction updateAttraction(Attraction attraction, Long attractionId) throws VisitaqBusinessException {
-
+		
+		PreparedStatement ps = null;
 		Connection connection = null;
+		
 		Attraction response = new Attraction();
 		Utility utility = new Utility();
-		
 		String query = "UPDATE attractions SET name=?, locality=?, id_category=?, id_creator=?, lat=?, lng=?, description=? WHERE id=?";
-		PreparedStatement ps = null;
-		
 		
 		try {
 
@@ -166,12 +160,12 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				ps.setLong(8, attractionId);
 
 				if(ps.executeUpdate() == 1) {
-					System.out.println("Attraction updated");
+					//System.out.println("Attraction updated");
 				}else {
-					System.out.println("Attraction not updated");
+					//System.out.println("Attraction not updated");
 				}
 			}else {
-				System.out.println("Attraction not udpated: user is not its creator");
+				//System.out.println("Attraction not udpated: user is not its creator");
 			}
 		}
 		catch (SQLException e) {
@@ -199,14 +193,15 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		return response;
 	}
 	
+	@Override
 	public Attraction selectAttractionDetail(Long id) {
 
+		PreparedStatement sql = null;
 		Connection connection = null;
 		
 		Attraction attraction = new Attraction();
 		String query = "SELECT * FROM attractions WHERE id=?";
-		PreparedStatement sql = null;
-
+		
 		try {
 			
 			connection = this.getConnection(connection);
@@ -219,7 +214,6 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			ResultSet rs = sql.executeQuery();
 			
 			while(rs.next()) {
-			
 				attraction.setId(rs.getLong("id"));
 				attraction.setName(rs.getString("name"));
 				attraction.setLocality(rs.getString("locality"));
@@ -228,8 +222,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
-				attraction.setDescription(rs.getString("description"));
-				
+				attraction.setDescription(rs.getString("description"));	
 			}
 			return attraction;
 		} catch (SQLException e) {
@@ -244,13 +237,14 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		}
 	}
 	
+	@Override
 	public List<Attraction> selectAttractions() {
 
+		PreparedStatement sql = null;
 		Connection connection = null;
 		List<Attraction> response = new ArrayList<Attraction>();
 		
 		String query = "SELECT * FROM attractions";
-		PreparedStatement sql = null;
 
 		try {
 
@@ -268,18 +262,14 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				attraction.setId(rs.getLong("id"));
 				attraction.setName(rs.getString("name"));
 				attraction.setLocality(rs.getString("locality"));
-								
 				attraction.setCategoryId(rs.getLong("id_category"));
 				attraction.setCreatorId(rs.getLong("id_creator"));
-				
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
 				attraction.setDescription(rs.getString("description"));
 				
-				response.add(attraction);	
-				
+				response.add(attraction);		
 			}
-			
 			rs.close(); 
 			
 			return response;

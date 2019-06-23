@@ -86,7 +86,7 @@ function attractionDetail(attractionId) {
                                 '<div class="row">' +
                                     '<div class="col-8">' +
                                     '<h1>' + attraction.name + '</h1>' +
-                                    '<span class="image main"><img src="images/attraction.jpg" alt="" height="300px" /></span>' +
+                                    '<span class="image main"><img src="images/roccacalascio.jpg" alt="" height="300px" /></span>' +
                                     '<p>' + attraction.description + '</p>' +
                                 '</div>' +
                                 '<div class="col-4">' +

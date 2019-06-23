@@ -1,7 +1,5 @@
 package it.univaq.disim.swa.visitaq.api;
 
-import java.net.URI;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -34,7 +32,11 @@ public class RESTAccountResource {
 		try {
 			Boolean responseMessage = accountService.insertUser(user);
 			
-			return Response.ok(responseMessage).build();			
+			if(responseMessage) {
+				return Response.ok(responseMessage).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}		
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}

@@ -1,12 +1,11 @@
 
-$(document).ready(function () {
+$(document).ready( function () {
     
     $("#events").hide(); 
     $("#Detail").hide();
     $("#choice").hide();
     $("#attractions").hide();
     $("#logout").hide();
-
     $("#BottoneRegistrazione").hide();
     $("#LoginForm").hide();
 
@@ -14,6 +13,7 @@ $(document).ready(function () {
 
     var listEvents = function() {
 
+    	//console.log('listEvents');
         $.ajax( {
             headers: { 
                 'Accept': 'application/json',
@@ -62,6 +62,7 @@ $(document).ready(function () {
 
     var listAttractions = function() {
 
+    	//console.log('listAttractions');
         $.ajax( {
             headers: { 
                 'Accept': 'application/json',
@@ -108,72 +109,10 @@ $(document).ready(function () {
         });
     };
 
-    var home = function(){
-        $("#events").hide(); 
-        $("#Detail").hide();
-        $("#choice").hide();
-        $("#attractions").hide();
-        $("#logout").hide();
-        $("#BottoneRegistrazione").hide();
-        $("#LoginForm").hide();
-
-        $("#RegistrazioneForm").show();
-        $("#BottoneLogin").show();
-        $("#WelcomeDescription").show();
-    };
-
-    //logo
-    $("#logo").click(function() {
-
-        $("#Detail").hide();
-        $("#attractions").hide();
-        $("#events").hide();
-        $("#choice").show(); 
-    });
-
-    //Bottone Login
-    $("#LoginButton").click(function() {
-
-        $("#RegistrazioneForm").hide();
-        $("#BottoneLogin").hide();
-
-        $("#BottoneRegistrazione").show();
-        $("#LoginForm").show();
-    });
-
-    //Bottone Registrazione
-    $("#RegistrationButton").click(function() {
-
-        $("#RegistrazioneForm").show();
-        $("#BottoneLogin").show();
-
-        $("#BottoneRegistrazione").hide();
-        $("#LoginForm").hide();
-    });
-
-    //scelta evento
-    $("#eventsChoice").click(function() {
-
-        $("#choice").hide();
-        $("#events").show();
-
-        listEvents();   
-    });
-
-    //scelta attrazione
-    $("#attractionChoice").click(function() {
-
-        $("#choice").hide();
-        $("#attractions").show();
-
-        listAttractions();   
-    });
-
-     //logout
+    //logout
     $("#logout").click(function() {
 
-        console.log('logout');
-
+        //console.log('logout');
         $.ajax( { 
             headers: { 
                 'Accept': 'application/json',
@@ -189,7 +128,6 @@ $(document).ready(function () {
                 $("#RegistrazioneForm").show();
                 $("#BottoneLogin").show();
                 $("#WelcomeDescription").show();
-
                 $("#events").hide();
                 $("#attractions").hide(); 
                 $("#Detail").hide();
@@ -201,7 +139,7 @@ $(document).ready(function () {
                 console.log(m);
                 alert('error!');
 
-                home();
+                homeLogin();
             }
         });
         return false;
@@ -210,8 +148,7 @@ $(document).ready(function () {
     //login
     $("#login").click(function() { 
 
-        console.log("login");
-
+        //console.log("login");
         var message="";
         var email = $("#email").val();
         var password = $("#password").val();
@@ -222,10 +159,8 @@ $(document).ready(function () {
             alert(message);
             return false;
         }
-
-        console.log("email: " + email);
-        console.log("password: " + password);
-
+        //console.log("email: " + email);
+        //console.log("password: " + password);
         $.ajax( { 
             headers: { 
                 'Accept': 'application/json',
@@ -248,14 +183,13 @@ $(document).ready(function () {
                 $("#WelcomeDescription").hide();
                 $("#choice").show();
                 $("#logout").show();
-                //alert(data);
             },
             error: function(x, m) {
                 console.log(x);
                 console.log(m);
-                alert('error!');
+                alert('Sicuro di essere registrato? E-mail o Password non sono corrette!');
 
-                home();
+                homeLogin();
             }
         });
         return false;
@@ -283,11 +217,10 @@ $(document).ready(function () {
             return false;
         }
 
-        console.log("namess: " + name);
-        console.log("surnamess: " + surname);
-        console.log("mailss: " + mail);
-        console.log("passss: " + pass);
-
+        //console.log("namess: " + name);
+        //console.log("surnamess: " + surname);
+        //console.log("mailss: " + mail);
+        //console.log("passss: " + pass);
         $.ajax({ 
             headers: { 
                 'Accept': 'application/json',
@@ -321,13 +254,88 @@ $(document).ready(function () {
             error: function(x, m) {
                 console.log(x);
                 console.log(m);
-                alert('error!');
+                alert('E-mail già registrata! Provane una diversa..');
 
-                home();
+                homeRegistrazione();
             }
         });
         return false;
     });
+
+    //presentazione home per registrazione
+    var homeRegistrazione = function(){
+        $("#events").hide(); 
+        $("#Detail").hide();
+        $("#choice").hide();
+        $("#attractions").hide();
+        $("#logout").hide();
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
+
+        $("#RegistrazioneForm").show();
+        $("#BottoneLogin").show();
+        $("#WelcomeDescription").show();
+    };
+
+    //presentazione home per login
+    var homeLogin = function(){
+        $("#events").hide(); 
+        $("#Detail").hide();
+        $("#choice").hide();
+        $("#attractions").hide();
+        $("#logout").hide();
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
+
+        $("#LoginForm").show();
+        $("#BottoneRegistrazione").show();
+        $("#WelcomeDescription").show();
+    };
+
+    //azione quando si clicca sul logo
+    $("#logo").click(function() {
+
+        $("#Detail").hide();
+        $("#attractions").hide();
+        $("#events").hide();
+        $("#choice").show(); 
+    });
+
+    //azione quando si clicca sul Bottone Login
+    $("#LoginButton").click(function() {
+
+        $("#RegistrazioneForm").hide();
+        $("#BottoneLogin").hide();
+
+        $("#BottoneRegistrazione").show();
+        $("#LoginForm").show();
+    });
+
+    //azione quando si clicca sul Bottone Registrazione
+    $("#RegistrationButton").click(function() {
+
+        $("#RegistrazioneForm").show();
+        $("#BottoneLogin").show();
+
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
+    });
+
+    //azione quando si sceglie l'evento
+    $("#eventsChoice").click(function() {
+
+        $("#choice").hide();
+        $("#events").show();
+
+        listEvents();   
+    });
+
+    //azione quando si sceglie l'attrazione
+    $("#attractionChoice").click(function() {
+
+        $("#choice").hide();
+        $("#attractions").show();
+
+        listAttractions();   
+    });
 });
-
-

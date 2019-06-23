@@ -25,23 +25,23 @@ import it.univaq.disim.swa.visitaq.business.impl.AccountResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.business.impl.AttractionResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.domain.Attraction;
 
-@Path("attractions")
+
 public class RESTAttractionResource {
 
 	private AttractionResourceService attractionService = new AttractionResourceServiceImpl();
 	private AccountResourceService accountService = new AccountResourceServiceImpl();
 	
 	@GET
-	@Path("/{token}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getAllAttractions(@PathParam("token") String token) {
 		try {
 			if(accountService.checkSession(token)) {
 				List<Attraction> attractions = attractionService.selectAttractions();
+				
 				return Response.ok(attractions).build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -49,16 +49,17 @@ public class RESTAttractionResource {
 	}
 	
 	@GET
-	@Path("/{id}/{token}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getEventById(@PathParam("id") Long id, @PathParam("token") String token) {
 		try {
 			if(accountService.checkSession(token)) {
 				Attraction attraction = attractionService.selectAttractionDetail(id);
+				
 				return Response.ok(attraction).build();
 			}else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -66,18 +67,18 @@ public class RESTAttractionResource {
 	}
 	
 	@POST
-	@Path("/add/{token}")
+	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertAttraction(@PathParam("token") String token, Attraction attraction, @Context UriInfo uriInfo) {
 		try {
 			if(accountService.checkSession(token)) {
 				Attraction newAttraction = attractionService.insertAttraction(attraction);
-				URI userUri = uriInfo.getAbsolutePathBuilder().path(newAttraction.getName().toString()).build();
+				URI Uri = uriInfo.getAbsolutePathBuilder().path(newAttraction.getName().toString()).build();
 
-				return Response.created(userUri).build();
+				return Response.created(Uri).build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -85,16 +86,15 @@ public class RESTAttractionResource {
 	}
 
 	@DELETE
-	@Path("/delete/{id}/{token}")
+	@Path("/delete/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response deleteAttraction(@PathParam("id") Long id, @PathParam("token") String token, Attraction attraction) {
 		try {
 			if(accountService.checkSession(token)) {
 				attractionService.deleteAttraction(id, attraction);
-
 				return Response.noContent().build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -102,34 +102,29 @@ public class RESTAttractionResource {
 	}
 
 	@PUT
-	@Path("/update/{id}/{token}")
+	@Path("/update/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response updateAttraction(@PathParam("id") Long id, @PathParam("token") String token, @Context UriInfo uriInfo, Attraction attraction) throws IllegalArgumentException, UriBuilderException {
+	public Response updateAttraction(@PathParam("id") Long id, 
+									 @PathParam("token") String token, 
+									 @Context UriInfo uriInfo, 
+									 Attraction attraction) throws IllegalArgumentException, UriBuilderException {
 		
-		
-			if (attraction == null) {
-				return Response.status(Status.BAD_REQUEST).build();
+		if (attraction == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		if (id == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+		try {	
+			if(accountService.checkSession(token)) {
+				attractionService.updateAttraction(attraction, id);
+				return Response.noContent().build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
-			if (id == null) {
-				return Response.status(Status.BAD_REQUEST).build();
-			}
-			
-			try {	
-				if(accountService.checkSession(token)) {
-					Attraction newAttraction = attractionService.updateAttraction(attraction, id);
-					
-					URI userUri = uriInfo.getAbsolutePathBuilder()
-			                .path(newAttraction.getName().toString())
-			                .build();
-					
-					return Response.created(userUri).build();
-				} else {
-					return Response.status(401).build();
-				}
-			} catch (VisitaqBusinessException e) {
-				throw new VisitaqWebApplicationException("Errore interno al server");
-			}
-		
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
 	}
 }

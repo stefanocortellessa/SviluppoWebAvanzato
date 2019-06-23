@@ -24,31 +24,30 @@ import it.univaq.disim.swa.visitaq.business.impl.AccountResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.business.impl.EventResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.domain.Event;
 
-@Path("events")
 public class RESTEventResource {
 
 	private EventResourceService eventService = new EventResourceServiceImpl();
 	private AccountResourceService accountService = new AccountResourceServiceImpl();
 	
 	@GET
-	@Path("/{token}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getAllEvents(@PathParam("token") String token) {
 		try {
 			if(accountService.checkSession(token)) {
 				List<Event> events = eventService.selectEvents();
+				
 				return Response.ok(events).build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
-		} catch (VisitaqBusinessException e) {
+		} catch (VisitaqBusinessException ex) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
 	}
 	
 	@GET
-	@Path("/{id}/{token}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getEventById(@PathParam("id") Long id, @PathParam("token") String token) {
@@ -58,7 +57,7 @@ public class RESTEventResource {
 				
 				return Response.ok(event).build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -66,20 +65,18 @@ public class RESTEventResource {
 	}
 	
 	@POST
-	@Path("/add/{token}")
+	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertAttraction(@PathParam("token") String token, Event event, @Context UriInfo uriInfo) {
 		try {
-
 			if(accountService.checkSession(token)) {
 				Event newEvent = eventService.insertEvent(event);
+				URI Uri = uriInfo.getAbsolutePathBuilder().path(newEvent.getTitle().toString()).build();
 
-				URI userUri = uriInfo.getAbsolutePathBuilder().path(newEvent.getTitle().toString()).build();
-
-				return Response.created(userUri).build();
+				return Response.created(Uri).build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -87,26 +84,23 @@ public class RESTEventResource {
 	}
 	
 	@DELETE
-	@Path("/delete/{id}/{token}")
+	@Path("/delete/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response deleteAttraction(@PathParam("id") Long id, @PathParam("token") String token, Event event) {
 		try {
-
 			if(accountService.checkSession(token)) {
 				eventService.deleteEvent(id, event);
-
 				return Response.noContent().build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
-			
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
 	}
 	
 	@PUT
-	@Path("/update/{id}/{token}")
+	@Path("/update/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response updateAttraction(@PathParam("id") Long id, @PathParam("token") String token, @Context UriInfo uriInfo, Event event) {
@@ -119,17 +113,11 @@ public class RESTEventResource {
 		}
 		try {
 			if(accountService.checkSession(token)) {
-				Event newEvent = eventService.updateEvent(event, id);
-				
-				URI userUri = uriInfo.getAbsolutePathBuilder()
-		                .path(newEvent.getTitle().toString())
-		                .build();
-				
-				return Response.created(userUri).build();
+				eventService.updateEvent(event, id);
+				return Response.noContent().build();
 			} else {
-				return Response.status(401).build();
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
-			
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}

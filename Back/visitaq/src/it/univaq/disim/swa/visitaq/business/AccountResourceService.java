@@ -5,7 +5,7 @@ import it.univaq.disim.swa.visitaq.domain.User;
 
 public interface AccountResourceService {
 	 
-	Boolean insertUser(User user) throws VisitaqBusinessException;
+	User insertUser(User user) throws VisitaqBusinessException;
 
 	void deleteUser(Long id) throws VisitaqBusinessException;
 

@@ -12,6 +12,8 @@ import java.util.TimeZone;
 import it.univaq.disim.swa.visitaq.business.AttractionResourceService;
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
 import it.univaq.disim.swa.visitaq.domain.Attraction;
+import it.univaq.disim.swa.visitaq.domain.Category;
+import it.univaq.disim.swa.visitaq.domain.User;
 
 public class AttractionResourceServiceImpl implements AttractionResourceService {
 
@@ -200,6 +202,8 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		Connection connection = null;
 		
 		Attraction attraction = new Attraction();
+		Category category = new Category();
+		User creator = new User();
 		String query = "SELECT * FROM attractions WHERE id=?";
 		
 		try {
@@ -214,11 +218,17 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			ResultSet rs = sql.executeQuery();
 			
 			while(rs.next()) {
+				
+				//System.out.println("RSSSS : " + rs.getString("categoriesName"));
+				
 				attraction.setId(rs.getLong("id"));
 				attraction.setName(rs.getString("name"));
 				attraction.setLocality(rs.getString("locality"));
-				attraction.setCategoryId(rs.getLong("id_category"));
-				attraction.setCreatorId(rs.getLong("id_creator"));
+				
+				category.setId(rs.getLong("id_category"));
+				attraction.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				attraction.setCreator(creator);
 				
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
@@ -245,7 +255,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		List<Attraction> response = new ArrayList<Attraction>();
 		
 		String query = "SELECT * FROM attractions";
-
+		
 		try {
 
 			connection = this.getConnection(connection);
@@ -258,12 +268,18 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			while(rs.next()) {
 				
 				Attraction attraction = new Attraction();
+				Category category = new Category();
+				User creator = new User();
 				
 				attraction.setId(rs.getLong("id"));
 				attraction.setName(rs.getString("name"));
 				attraction.setLocality(rs.getString("locality"));
-				attraction.setCategoryId(rs.getLong("id_category"));
-				attraction.setCreatorId(rs.getLong("id_creator"));
+				
+				category.setId(rs.getLong("id_category"));
+				attraction.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				attraction.setCreator(creator);
+				
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
 				attraction.setDescription(rs.getString("description"));

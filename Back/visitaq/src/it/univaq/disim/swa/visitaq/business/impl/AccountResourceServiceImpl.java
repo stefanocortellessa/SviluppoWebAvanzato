@@ -40,20 +40,19 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	}
 	
 	@Override
-	public User insertUser(User user) throws VisitaqBusinessException {
+	public Boolean insertUser(User user) throws VisitaqBusinessException {
 
 		Connection connection = null;
 		PreparedStatement userPs = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		User response = new User();
+		Boolean response = false;
 		Utility utility = new Utility();
 		String sql = "SELECT * FROM users WHERE email = ?";
 		String insertSql = "INSERT INTO users (name,surname,email,password) VALUES (?,?,?,?)";
 		
 		try {
-
 			connection = this.getConnection(connection);
 			
 			ps = connection.prepareStatement(sql);
@@ -67,9 +66,10 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			
 			// if inserted email already exists, don't insert the user!
 			if(num_rows > 0 ) {
-			// else insert user on db
-			} else {
 				
+				response = false; 
+			// else insert user on db
+			}else {
 				userPs = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
 	
 				userPs.setString(1, user.getName());
@@ -77,10 +77,11 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 				userPs.setString(3, user.getEmail());
 				//password hashed using google.common.hash functions
 				userPs.setString(4, utility.hashPwd(user.getPassword()));
+	
 				userPs.executeUpdate();
+
+				response = true;
 			}
-			response.setEmail(user.getEmail());
-			
 			return response;
 		} catch (SQLException e) {
 			e.printStackTrace();

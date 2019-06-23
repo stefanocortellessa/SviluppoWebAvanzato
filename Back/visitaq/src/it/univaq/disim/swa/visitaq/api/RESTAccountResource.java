@@ -32,14 +32,9 @@ public class RESTAccountResource {
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertUser(User user, @Context UriInfo uriInfo) {
 		try {
-			User newUser = accountService.insertUser(user);
-			URI Uri = uriInfo.getAbsolutePathBuilder().path(newUser.getEmail().toString()).build();
+			Boolean responseMessage = accountService.insertUser(user);
 			
-			if(!newUser.getEmail().equals(null)) {
-				return Response.created(Uri).build();
-			} else {
-				return Response.ok().build();
-			}			
+			return Response.ok(responseMessage).build();			
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}

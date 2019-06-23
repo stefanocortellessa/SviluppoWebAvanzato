@@ -9,7 +9,7 @@ function eventDetail(eventId) {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/events/" + eventId + "/" + localStorage.getItem('token'),
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/events/" + eventId,
             success: function(data) { 
 
             	$("#Detail").show();
@@ -73,7 +73,7 @@ function attractionDetail(attractionId) {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/attractions/" + attractionId + "/" + localStorage.getItem('token'),
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/attractions/" + attractionId,
             success: function(data) { 
 
                 $("#Detail").show();

@@ -21,7 +21,7 @@ $(document).ready(function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/events/" + localStorage.getItem('token'),
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/events/",
             success: function(data) { 
 
                 var events = JSON.parse(JSON.stringify(data));
@@ -60,7 +60,6 @@ $(document).ready(function () {
         });
     };
 
-
     var listAttractions = function() {
 
         $.ajax( {
@@ -70,7 +69,7 @@ $(document).ready(function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/attractions/" + localStorage.getItem('token'),
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/attractions/",
             success: function(data) { 
 
                 var attractions = JSON.parse(JSON.stringify(data));
@@ -127,6 +126,7 @@ $(document).ready(function () {
     $("#logo").click(function() {
 
         $("#Detail").hide();
+        $("#attractions").hide();
         $("#events").hide();
         $("#choice").show(); 
     });
@@ -181,7 +181,7 @@ $(document).ready(function () {
             },
             type: "DELETE",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/user/logout/" + localStorage.getItem('token'),
+            url: "http://localhost:8080/visitaq/api/users/logout/" + localStorage.getItem('token'),
             success: function(data) { 
 
                 localStorage.removeItem('token')
@@ -238,7 +238,7 @@ $(document).ready(function () {
             }),
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8080/visitaq/api/user/login",
+            url: "http://localhost:8080/visitaq/api/users/login",
             success: function(data) { 
 
                 localStorage['token'] = JSON.parse(JSON.stringify(data));
@@ -301,7 +301,7 @@ $(document).ready(function () {
                 "password" : pass
             }),
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/user/add",
+            url: "http://localhost:8080/visitaq/api/users/add",
             success: function(data) {  
                 
                 if(data == false){

@@ -12,7 +12,9 @@ import java.util.TimeZone;
 
 import it.univaq.disim.swa.visitaq.business.EventResourceService;
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
+import it.univaq.disim.swa.visitaq.domain.Category;
 import it.univaq.disim.swa.visitaq.domain.Event;
+import it.univaq.disim.swa.visitaq.domain.User;
 
 
 public class EventResourceServiceImpl implements EventResourceService {
@@ -51,7 +53,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 		Connection connection = null;
 		
 		Event response = new Event();
-		String query = "INSERT INTO events (title, locality, startDate, endDate, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?,?,?)";
+		String query = "INSERT INTO events (title, locality, startDate, endDate, id_category, id_creator, lat, lng, description, image) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		
 		try {
 
@@ -69,6 +71,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 			ps.setString(7, event.getLat());
 			ps.setString(8, event.getLng());
 			ps.setString(9, event.getDescription());
+			ps.setString(10, event.getImage());
 
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -145,7 +148,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 		
 		Event response = new Event();
 		Utility utility = new Utility();
-		String query = "UPDATE events SET title=?, locality=?, startDate=?, endDate=?, id_category=?, id_creator=?, lat=?, lng=?, description=? WHERE id=?";
+		String query = "UPDATE events SET title=?, locality=?, startDate=?, endDate=?, id_category=?, id_creator=?, lat=?, lng=?, description=?, image=? WHERE id=?";
 		
 		try {
 
@@ -165,6 +168,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 				ps.setString(7, event.getLat());
 				ps.setString(8, event.getLng());
 				ps.setString(9, event.getDescription());
+				ps.setString(9, event.getImage());
 				ps.setLong(10, id);
 
 				ps.executeUpdate();
@@ -200,6 +204,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 		Connection connection = null;
 		
 		Event event = new Event();
+		Category category = new Category();
+		User creator = new User();
 		String query = "SELECT * FROM events WHERE id=?";
 
 		try {
@@ -220,11 +226,16 @@ public class EventResourceServiceImpl implements EventResourceService {
 				event.setLocality(rs.getString("locality"));
 				event.setStartDate(rs.getTimestamp("startDate"));
 				event.setEndDate(rs.getTimestamp("endDate"));
-				event.setCategoryId(rs.getLong("id_category"));
-				event.setCreatorId(rs.getLong("id_creator"));
+				
+				category.setId(rs.getLong("id_category"));
+				event.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				event.setCreator(creator);
+				
 				event.setLat(rs.getString("lat"));
 				event.setLng(rs.getString("lng"));
 				event.setDescription(rs.getString("description"));
+				event.setImage(rs.getString("image"));
 			}
 			return event;
 		} catch (SQLException e) {
@@ -247,6 +258,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 		List<Event> response = new ArrayList<Event>();
 		
 		String query = "SELECT * FROM events";
+		Category category = new Category();
+		User creator = new User();
 		
 		try {
 
@@ -266,11 +279,16 @@ public class EventResourceServiceImpl implements EventResourceService {
 				event.setLocality(rs.getString("locality"));
 				event.setStartDate(rs.getTimestamp("startDate"));
 				event.setEndDate(rs.getTimestamp("endDate"));
-				event.setCategoryId(rs.getLong("id_category"));
-				event.setCreatorId(rs.getLong("id_creator"));
+				
+				category.setId(rs.getLong("id_category"));
+				event.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				event.setCreator(creator);
+				
 				event.setLat(rs.getString("lat"));
 				event.setLng(rs.getString("lng"));
 				event.setDescription(rs.getString("description"));
+				event.setImage(rs.getString("image"));
 				response.add(event);	
 			}
 			rs.close(); 

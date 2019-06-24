@@ -32,7 +32,7 @@ $(document).ready( function () {
                         
                         var list = '<article class="style1">';
                         list = list +   '<span class="image">' + 
-                                            '<img src="images/grey.jpg" height="300"alt=""/>' +
+                                            '<img src="images/' + events[i].image + '" height="300"alt=""/>' +
                                         '</span>' + 
                                         '<a>' +
                                             '<h2 id="prova" onclick="eventDetail(' + events[i].id + ')" >' + events[i].title + '</h2>' +
@@ -81,7 +81,7 @@ $(document).ready( function () {
                         
                         var list = '<article class="style1">';
                         list = list +   '<span class="image">' + 
-                                            '<img src="images/roccacalascio.jpg" height="300"alt=""/>' +
+                                            '<img src="images/' + attractions[i].image + '" height="300"alt=""/>' +
                                         '</span>' + 
                                         '<a>' +
                                             '<h2 id="prova" onclick="attractionDetail(' + attractions[i].id + ')" >' + attractions[i].name + '</h2>' +

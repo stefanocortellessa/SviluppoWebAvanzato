@@ -6,12 +6,11 @@ public class Attraction implements java.io.Serializable {
 	private String name;
 	private String locality;
 	private Category category;
-	//private Long categoryId;
 	private User creator;
-	//private Long creatorId;
 	private String lat;
 	private String lng;
 	private String description;
+	private String image;
 	
 	public String getDescription() {
 		return description;
@@ -61,18 +60,10 @@ public class Attraction implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	/*
-	public Long getCategoryId() {
-		return categoryId;
+	public String getImage() {
+		return image;
 	}
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setImage(String image) {
+		this.image = image;
 	}
-	public Long getCreatorId() {
-		return creatorId;
-	}
-	public void setCreatorId(Long creatorId) {
-		this.creatorId = creatorId;
-	}
-	*/
 }

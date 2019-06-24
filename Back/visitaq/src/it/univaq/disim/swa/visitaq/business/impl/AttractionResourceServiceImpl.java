@@ -47,7 +47,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		Connection connection = null;
 		
 		Attraction response = new Attraction();
-		String query = "INSERT INTO attractions (name, locality, id_category, id_creator, lat, lng, description) VALUES (?,?,?,?,?,?,?)";
+		String query = "INSERT INTO attractions (name, locality, id_category, id_creator, lat, lng, description, image) VALUES (?,?,?,?,?,?,?,?)";
 
 		try {
 
@@ -62,6 +62,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			ps.setString(5, attraction.getLat());
 			ps.setString(6, attraction.getLng());
 			ps.setString(7, attraction.getDescription());
+			ps.setString(8, attraction.getImage());
 
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -141,7 +142,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 		
 		Attraction response = new Attraction();
 		Utility utility = new Utility();
-		String query = "UPDATE attractions SET name=?, locality=?, id_category=?, id_creator=?, lat=?, lng=?, description=? WHERE id=?";
+		String query = "UPDATE attractions SET name=?, locality=?, id_category=?, id_creator=?, lat=?, lng=?, description=?, image=? WHERE id=?";
 		
 		try {
 
@@ -159,7 +160,8 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				ps.setString(5, attraction.getLat());
 				ps.setString(6, attraction.getLng());
 				ps.setString(7, attraction.getDescription());
-				ps.setLong(8, attractionId);
+				ps.setString(8, attraction.getImage());
+				ps.setLong(9, attractionId);
 
 				if(ps.executeUpdate() == 1) {
 					//System.out.println("Attraction updated");
@@ -232,7 +234,9 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
-				attraction.setDescription(rs.getString("description"));	
+				attraction.setDescription(rs.getString("description"));
+				attraction.setImage(rs.getString("image"));
+				
 			}
 			return attraction;
 		} catch (SQLException e) {
@@ -283,6 +287,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				attraction.setLat(rs.getString("lat"));
 				attraction.setLng(rs.getString("lng"));
 				attraction.setDescription(rs.getString("description"));
+				attraction.setImage(rs.getString("image"));
 				
 				response.add(attraction);		
 			}

@@ -10,12 +10,11 @@ public class Event implements java.io.Serializable {
 	private Timestamp startDate;
 	private Timestamp endDate;
 	private Category category;
-	private Long categoryId;
 	private User creator;
-	private Long creatorId;
 	private String lat;
 	private String lng;
 	private String description;
+	private String image;
 	
 	public User getCreator() {
 		return creator;
@@ -71,22 +70,16 @@ public class Event implements java.io.Serializable {
 	public void setLng(String lng) {
 		this.lng = lng;
 	}
-	public Long getCategoryId() {
-		return categoryId;
-	}
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-	public Long getCreatorId() {
-		return creatorId;
-	}
-	public void setCreatorId(Long creatorId) {
-		this.creatorId = creatorId;
-	}
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

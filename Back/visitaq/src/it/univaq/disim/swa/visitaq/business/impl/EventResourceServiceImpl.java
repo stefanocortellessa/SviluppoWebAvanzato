@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import it.univaq.disim.swa.visitaq.business.EventResourceService;
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
+import it.univaq.disim.swa.visitaq.domain.Attraction;
 import it.univaq.disim.swa.visitaq.domain.Category;
 import it.univaq.disim.swa.visitaq.domain.Event;
 import it.univaq.disim.swa.visitaq.domain.User;
@@ -293,6 +294,62 @@ public class EventResourceServiceImpl implements EventResourceService {
 			}
 			rs.close(); 
 			
+			return response;
+		} catch (SQLException e) {
+			return response;
+		}finally {
+			if (sql != null) {
+				try {
+					sql.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+	
+	@Override
+	public List<Event> selectEventsByUser(Long id) {
+
+		PreparedStatement sql = null;
+		Connection connection = null;
+		
+		Event event = new Event();
+		Category category = new Category();
+		User creator = new User();
+		String query = "SELECT * FROM events WHERE id_creator=?";
+		List<Event> response = new ArrayList<Event>();
+		
+		try {
+			
+			connection = this.getConnection(connection);
+			connection.setAutoCommit(false);
+			
+			sql = connection.prepareStatement(query);
+
+			sql.setLong(1, id);
+
+			ResultSet rs = sql.executeQuery();
+			
+			while(rs.next()) {
+			
+				event.setId(rs.getLong("id"));
+				event.setTitle(rs.getString("title"));
+				event.setLocality(rs.getString("locality"));
+				event.setStartDate(rs.getTimestamp("startDate"));
+				event.setEndDate(rs.getTimestamp("endDate"));
+				
+				category.setId(rs.getLong("id_category"));
+				event.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				event.setCreator(creator);
+				
+				event.setLat(rs.getString("lat"));
+				event.setLng(rs.getString("lng"));
+				event.setDescription(rs.getString("description"));
+				event.setImage(rs.getString("image"));
+				
+				response.add(event);
+			}
 			return response;
 		} catch (SQLException e) {
 			return response;

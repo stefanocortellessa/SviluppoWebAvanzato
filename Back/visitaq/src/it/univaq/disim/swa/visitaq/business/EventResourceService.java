@@ -15,4 +15,6 @@ public interface EventResourceService {
 	List<Event> selectEvents() throws VisitaqBusinessException;
 	
 	Event selectEventDetail(Long id) throws VisitaqBusinessException;
+
+	List<Event> selectEventsByUser(Long id) throws VisitaqBusinessException;
 }

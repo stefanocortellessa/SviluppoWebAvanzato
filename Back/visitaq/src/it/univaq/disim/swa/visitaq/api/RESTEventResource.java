@@ -22,6 +22,7 @@ import it.univaq.disim.swa.visitaq.business.EventResourceService;
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
 import it.univaq.disim.swa.visitaq.business.impl.AccountResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.business.impl.EventResourceServiceImpl;
+import it.univaq.disim.swa.visitaq.domain.Attraction;
 import it.univaq.disim.swa.visitaq.domain.Event;
 
 public class RESTEventResource {
@@ -57,6 +58,27 @@ public class RESTEventResource {
 				
 				return Response.ok(event).build();
 			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
+	@GET
+	@Path("/idCreator/{userId}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getEventsByUserId(
+			@PathParam("token") String token, 
+			@PathParam("userId") Long userID) {
+		
+		try {
+			if(accountService.checkSession(token)) {
+				List<Event> events = eventService.selectEventsByUser(userID);
+				
+				return Response.ok(events).build();
+			}else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		} catch (VisitaqBusinessException e) {

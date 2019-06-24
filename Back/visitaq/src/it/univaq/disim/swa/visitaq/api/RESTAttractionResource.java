@@ -25,7 +25,6 @@ import it.univaq.disim.swa.visitaq.business.impl.AccountResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.business.impl.AttractionResourceServiceImpl;
 import it.univaq.disim.swa.visitaq.domain.Attraction;
 
-
 public class RESTAttractionResource {
 
 	private AttractionResourceService attractionService = new AttractionResourceServiceImpl();
@@ -52,12 +51,33 @@ public class RESTAttractionResource {
 	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response getEventById(@PathParam("id") Long id, @PathParam("token") String token) {
+	public Response getAttractionById(@PathParam("id") Long id, @PathParam("token") String token) {
 		try {
 			if(accountService.checkSession(token)) {
 				Attraction attraction = attractionService.selectAttractionDetail(id);
 				
 				return Response.ok(attraction).build();
+			}else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
+	@GET
+	@Path("/idCreator/{userId}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getAttractionsByUserId(
+			@PathParam("token") String token, 
+			@PathParam("userId") Long userID) {
+		
+		try {
+			if(accountService.checkSession(token)) {
+				List<Attraction> attractions = attractionService.selectAttractionsByUser(userID);
+				
+				return Response.ok(attractions).build();
 			}else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}

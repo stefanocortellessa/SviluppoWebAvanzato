@@ -112,12 +112,16 @@ public class EventResourceServiceImpl implements EventResourceService {
 			connection = this.getConnection(connection);
 			connection.setAutoCommit(false);
 			
-			if (utility.checkCreator(connection, id, event.getCreator().getId())) {
 			
+			if (utility.checkCreatorEvents(connection, id, event.getCreator().getId())) {
+				
+				
 				ps = connection.prepareStatement(query);
 				ps.setLong(1, id);
+				
 				ps.executeUpdate();
 			} else {
+				
 				//System.out.println("Event NOT Deleted: user is NOT its creator");
 			}
 		} catch (SQLException e) {
@@ -156,7 +160,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 			connection = this.getConnection(connection);
 			connection.setAutoCommit(false);
 			
-			if (utility.checkCreator(connection, id, event.getCreator().getId())) {
+			if (utility.checkCreatorEvents(connection, id, event.getCreator().getId())) {
+				
+				System.out.println(utility.checkCreatorAttractions(connection, id, event.getCreator().getId()));
+				System.out.println("CREATORE RICONOSCIUTO = " + event.getCreator().getId());
 				
 				ps = connection.prepareStatement(query);
 
@@ -169,8 +176,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 				ps.setString(7, event.getLat());
 				ps.setString(8, event.getLng());
 				ps.setString(9, event.getDescription());
-				ps.setString(9, event.getImage());
-				ps.setLong(10, id);
+				ps.setString(10, event.getImage());
+				ps.setLong(11, id);
 
 				ps.executeUpdate();
 			} 
@@ -312,12 +319,9 @@ public class EventResourceServiceImpl implements EventResourceService {
 
 		PreparedStatement sql = null;
 		Connection connection = null;
-		
-		Event event = new Event();
-		Category category = new Category();
-		User creator = new User();
-		String query = "SELECT * FROM events WHERE id_creator=?";
 		List<Event> response = new ArrayList<Event>();
+		
+		String query = "SELECT * FROM events WHERE id_creator=?";
 		
 		try {
 			
@@ -332,6 +336,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 			
 			while(rs.next()) {
 			
+				Event event = new Event();
+				Category category = new Category();
+				User creator = new User();
+				
 				event.setId(rs.getLong("id"));
 				event.setTitle(rs.getString("title"));
 				event.setLocality(rs.getString("locality"));
@@ -350,6 +358,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 				
 				response.add(event);
 			}
+			rs.close();
+			
 			return response;
 		} catch (SQLException e) {
 			return response;
@@ -368,12 +378,9 @@ public class EventResourceServiceImpl implements EventResourceService {
 
 		PreparedStatement sql = null;
 		Connection connection = null;
-		
-		Event event = new Event();
-		Category category = new Category();
-		User creator = new User();
-		String query = "SELECT * FROM events WHERE id_category=?";
 		List<Event> response = new ArrayList<Event>();
+		
+		String query = "SELECT * FROM events WHERE id_category=?";
 		
 		try {
 			
@@ -388,6 +395,10 @@ public class EventResourceServiceImpl implements EventResourceService {
 			
 			while(rs.next()) {
 			
+				Event event = new Event();
+				Category category = new Category();
+				User creator = new User();
+				
 				event.setId(rs.getLong("id"));
 				event.setTitle(rs.getString("title"));
 				event.setLocality(rs.getString("locality"));
@@ -406,6 +417,8 @@ public class EventResourceServiceImpl implements EventResourceService {
 				
 				response.add(event);
 			}
+			rs.close();
+			
 			return response;
 		} catch (SQLException e) {
 			return response;

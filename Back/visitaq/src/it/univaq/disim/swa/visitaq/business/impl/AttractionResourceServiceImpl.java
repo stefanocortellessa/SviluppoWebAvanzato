@@ -103,7 +103,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			connection = this.getConnection(connection);
 			connection.setAutoCommit(false);
 			
-			if (utility.checkCreator(connection, attractionId, attraction.getCreator().getId())) {
+			if (utility.checkCreatorAttractions(connection, attractionId, attraction.getCreator().getId())) {
 				
 				ps = connection.prepareStatement(query);
 				
@@ -149,7 +149,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			connection = this.getConnection(connection);
 			connection.setAutoCommit(false);
 			
-			if(utility.checkCreator(connection, attractionId, attraction.getCreator().getId())) {	
+			if(utility.checkCreatorAttractions(connection, attractionId, attraction.getCreator().getId())) {	
 				
 				ps = connection.prepareStatement(query);
 

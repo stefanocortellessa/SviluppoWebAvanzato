@@ -34,10 +34,45 @@ public class Utility {
 		return hashed;
 	}
 	
-	// Method to check the creator of something
-	public boolean checkCreator(Connection connection, Long attractionId, Long creatorId) {
+	// Method to check the attraction creator
+	public boolean checkCreatorAttractions(Connection connection, Long attractionId, Long creatorId) {
 
 		String query = "SELECT id_creator FROM attractions WHERE id = ?";
+		PreparedStatement sql = null;
+
+		try {
+			sql = connection.prepareStatement(query);
+
+			sql.setLong(1, attractionId);
+			
+			ResultSet rs = sql.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getLong("id_creator") == creatorId) {
+
+					//System.out.println("attraction creator identified");
+					return true;
+				} else {
+					return false;
+				}
+			}
+			return false;
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			if (sql != null) {
+				try {
+					sql.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+	
+	// Method to check the attraction creator
+	public boolean checkCreatorEvents(Connection connection, Long attractionId, Long creatorId) {
+
+		String query = "SELECT id_creator FROM events WHERE id = ?";
 		PreparedStatement sql = null;
 
 		try {

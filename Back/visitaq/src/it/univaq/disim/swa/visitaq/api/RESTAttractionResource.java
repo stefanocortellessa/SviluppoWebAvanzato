@@ -108,16 +108,19 @@ public class RESTAttractionResource {
 	}
 	
 	@POST
-	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertAttraction(@PathParam("token") String token, Attraction attraction, @Context UriInfo uriInfo) {
 		try {
 			if(accountService.checkSession(token)) {
 				Attraction newAttraction = attractionService.insertAttraction(attraction);
-				URI Uri = uriInfo.getAbsolutePathBuilder().path(newAttraction.getName().toString()).build();
-
-				return Response.created(Uri).build();
+				
+				if(newAttraction != null) {
+					URI Uri = uriInfo.getAbsolutePathBuilder().path(newAttraction.getName().toString()).build();
+					return Response.created(Uri).build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -127,7 +130,7 @@ public class RESTAttractionResource {
 	}
 
 	@DELETE
-	@Path("/delete/{id}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response deleteAttraction(@PathParam("id") Long id, @PathParam("token") String token, Attraction attraction) {
 		try {
@@ -143,7 +146,7 @@ public class RESTAttractionResource {
 	}
 
 	@PUT
-	@Path("/update/{id}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response updateAttraction(@PathParam("id") Long id, 

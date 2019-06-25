@@ -108,16 +108,21 @@ public class RESTEventResource {
 	}
 	
 	@POST
-	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertEvent(@PathParam("token") String token, Event event, @Context UriInfo uriInfo) {
 		try {
 			if(accountService.checkSession(token)) {
 				Event newEvent = eventService.insertEvent(event);
-				URI Uri = uriInfo.getAbsolutePathBuilder().path(newEvent.getTitle().toString()).build();
+				
+				if(newEvent != null) {
+					
+					URI Uri = uriInfo.getAbsolutePathBuilder().path(newEvent.getTitle().toString()).build();
 
-				return Response.created(Uri).build();
+					return Response.created(Uri).build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -127,11 +132,12 @@ public class RESTEventResource {
 	}
 	
 	@DELETE
-	@Path("/delete/{id}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response deleteEvent(@PathParam("id") Long id, @PathParam("token") String token, Event event) {
 		try {
 			if(accountService.checkSession(token)) {
+				
 				eventService.deleteEvent(id, event);
 				return Response.noContent().build();
 			} else {
@@ -143,7 +149,7 @@ public class RESTEventResource {
 	}
 	
 	@PUT
-	@Path("/update/{id}")
+	@Path("/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response updateEvent(@PathParam("id") Long id, @PathParam("token") String token, @Context UriInfo uriInfo, Event event) {

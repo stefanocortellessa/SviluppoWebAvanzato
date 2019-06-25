@@ -50,7 +50,7 @@ public class RESTAccountResource {
 	@Path("/{token}/email/{email}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response getAllUsers(@PathParam("token") String token, @PathParam("email") String email) {
+	public Response getAllUsersByEmail(@PathParam("token") String token, @PathParam("email") String email) {
 		try {
 			if(accountService.checkSession(token)) {
 				User user = accountService.selectUserByEmail(email);
@@ -65,7 +65,6 @@ public class RESTAccountResource {
 	}
 	
 	@POST
-	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response insertUser(User user, @Context UriInfo uriInfo) {
@@ -73,10 +72,10 @@ public class RESTAccountResource {
 			Boolean responseMessage = accountService.insertUser(user);
 			
 			if(responseMessage) {
-				return Response.ok(responseMessage).build();
+				return Response.ok(responseMessage).status(Status.CREATED).build();
 			} else {
-				return Response.status(Status.UNAUTHORIZED).build();
-			}		
+				return Response.status(Status.FORBIDDEN).build();
+			}	
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
@@ -88,25 +87,8 @@ public class RESTAccountResource {
 	public Response logout(@PathParam("token") String token) {
 		try {
 			accountService.logoutUser(token);
-			return Response.noContent().build();
-		} catch (VisitaqBusinessException e) {
-			throw new VisitaqWebApplicationException("Errore interno al server");
-		}
-	}
-	
-	@POST
-	@Path("/{token}")
-	@Consumes({MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_JSON})
-	public Response checkSession(@PathParam("token") String token) {
-		try {
-			Boolean responseMessage = accountService.checkSession(token);
 			
-			if (responseMessage) {
-				return Response.ok(responseMessage).status(201).build();
-			} else {
-				return Response.status(Status.UNAUTHORIZED).build();
-			}
+			return Response.noContent().build();
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
@@ -123,7 +105,7 @@ public class RESTAccountResource {
 			if(userToken != null) {
 				return Response.ok(userToken.getToken()).status(201).build();
 	        } else {
-	            return Response.status(403).build();
+	            return Response.status(Status.FORBIDDEN).build();
 	        }
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
@@ -131,19 +113,23 @@ public class RESTAccountResource {
 	}
 	
 	@DELETE
-	@Path("/{token}/delete/{id}")
+	@Path("/{token}/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response deleteUser(@PathParam("id") Long id, @PathParam("token") String token) {
 		try {
-			accountService.deleteUser(id);
-			return Response.noContent().build();
+			if(accountService.checkSession(token)) {
+				accountService.deleteUser(id);
+				return Response.noContent().build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
 	}
 	
 	@PUT
-	@Path("/{token}/update/{id}")
+	@Path("/{token}/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response updateUser(User user, @PathParam("id") Long id, @PathParam("token") String token) {

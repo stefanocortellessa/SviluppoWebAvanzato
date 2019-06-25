@@ -234,7 +234,7 @@ $(document).ready( function () {
                 "password" : pass
             }),
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/users/add",
+            url: "http://localhost:8080/visitaq/api/users",
             success: function(data) {  
                 
                 if(data == false){

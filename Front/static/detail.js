@@ -30,10 +30,10 @@ function eventDetail(eventId) {
                                     '<p>' + event.description + '</p>' +
                                 '</div>' +
                                 '<div class="col-4">' +
-                                    '<h1> More Info.. </h1>' +
-                                    '<p><em><strong> Locality: </strong></em>' + event.locality + '</p>' +
-                                    '<p><em><strong> The event is starting: </strong></em>' + startDate.toLocaleString() + '</p>' +
-                                    '<p><em><strong> The event is ending: </strong></em>' + endDate.toLocaleString() + '</p>' +
+                                    '<h1> Maggiori Info.. </h1>' +
+                                    '<p><em><strong> Località: </strong></em>' + event.locality + '</p>' +
+                                    '<p><em><strong> Inizierà il: </strong></em>' + startDate.toLocaleString() + '</p>' +
+                                    '<p><em><strong> Terminerà il: </strong></em>' + endDate.toLocaleString() + '</p>' +
                                 '</div>' +
                                 '<div class="col-8">' + 
                                     '<div id="map" style="width:100%;height:300px;"></div>' +
@@ -91,7 +91,7 @@ function attractionDetail(attractionId) {
                                 '</div>' +
                                 '<div class="col-4">' +
                                     '<h1> More Info.. </h1>' +
-                                    '<p><em><strong> Locality: </strong></em>' + attraction.locality + '</p>' +
+                                    '<p><em><strong> Località: </strong></em>' + attraction.locality + '</p>' +
                                 '</div>' +
                                 '<div class="col-8">' + 
                                     '<div id="map" style="width:100%;height:300px;"></div>' +

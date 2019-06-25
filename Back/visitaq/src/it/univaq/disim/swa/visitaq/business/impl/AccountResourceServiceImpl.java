@@ -6,10 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
 import it.univaq.disim.swa.visitaq.business.AccountResourceService;
+import it.univaq.disim.swa.visitaq.domain.Attraction;
+import it.univaq.disim.swa.visitaq.domain.Category;
 import it.univaq.disim.swa.visitaq.domain.Session;
 import it.univaq.disim.swa.visitaq.domain.User;
 
@@ -349,5 +353,95 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			}
 		}
 		return response;
+	}
+	
+	@Override
+	public List<User> selectAllUsers() {
+
+		PreparedStatement sql = null;
+		Connection connection = null;
+		List<User> response = new ArrayList<User>();
+		
+		String query = "SELECT * FROM users";
+		
+		try {
+
+			connection = this.getConnection(connection);
+			connection.setAutoCommit(false);
+			
+			sql = connection.prepareStatement(query);
+			
+			ResultSet rs = sql.executeQuery();
+			
+			while(rs.next()) {
+				
+				User user = new User();
+				
+				user.setId(rs.getLong("id"));
+				user.setName(rs.getString("name"));
+				user.setSurname(rs.getString("surname"));
+								
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));
+				
+				response.add(user);		
+			}
+			rs.close(); 
+			
+			return response;
+		} catch (SQLException e) {
+			return response;
+		}finally {
+			if (sql != null) {
+				try {
+					sql.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+	
+	@Override
+	public User selectUserByEmail(String email) {
+
+		PreparedStatement sql = null;
+		Connection connection = null;
+		
+		User user = new User();
+		String query = "SELECT * FROM users WHERE email=?";
+		
+		try {
+			
+			connection = this.getConnection(connection);
+			connection.setAutoCommit(false);
+			
+			sql = connection.prepareStatement(query);
+
+			sql.setString(1, email);
+
+			ResultSet rs = sql.executeQuery();
+			
+			while(rs.next()) {
+				
+				//System.out.println("RSSSS : " + rs.getString("categoriesName"));
+				
+				user.setId(rs.getLong("id"));
+				user.setName(rs.getString("name"));
+				user.setSurname(rs.getString("surname"));
+								
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));				
+			}
+			return user;
+		} catch (SQLException e) {
+			return user;
+		}finally {
+			if (sql != null) {
+				try {
+					sql.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
 	}
 }

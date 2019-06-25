@@ -1,7 +1,10 @@
 package it.univaq.disim.swa.visitaq.api;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -16,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import it.univaq.disim.swa.visitaq.business.VisitaqBusinessException;
 import it.univaq.disim.swa.visitaq.business.AccountResourceService;
 import it.univaq.disim.swa.visitaq.business.impl.AccountResourceServiceImpl;
+import it.univaq.disim.swa.visitaq.domain.Attraction;
 import it.univaq.disim.swa.visitaq.domain.Session;
 import it.univaq.disim.swa.visitaq.domain.User;
 
@@ -23,6 +27,42 @@ import it.univaq.disim.swa.visitaq.domain.User;
 public class RESTAccountResource {
 
 	private AccountResourceService accountService = new AccountResourceServiceImpl();
+	
+	@GET
+	@Path("/{token}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getAllUsers(@PathParam("token") String token) {
+		try {
+			if(accountService.checkSession(token)) {
+				List<User> users = accountService.selectAllUsers();
+				
+				return Response.ok(users).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
+	@GET
+	@Path("/{token}/email/{email}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getAllUsers(@PathParam("token") String token, @PathParam("email") String email) {
+		try {
+			if(accountService.checkSession(token)) {
+				User user = accountService.selectUserByEmail(email);
+				
+				return Response.ok(user).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
 	
 	@POST
 	@Path("/add")

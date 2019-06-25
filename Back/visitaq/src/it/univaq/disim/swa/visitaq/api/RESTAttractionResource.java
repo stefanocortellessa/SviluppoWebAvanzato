@@ -86,6 +86,27 @@ public class RESTAttractionResource {
 		}
 	}
 	
+	@GET
+	@Path("/idCategory/{categoryId}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getAttractionsByCategory(
+			@PathParam("token") String token, 
+			@PathParam("categoryId") Long categoryId) {
+		
+		try {
+			if(accountService.checkSession(token)) {
+				List<Attraction> attractions = attractionService.selectAttractionsByCategory(categoryId);
+				
+				return Response.ok(attractions).build();
+			}else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
 	@POST
 	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})

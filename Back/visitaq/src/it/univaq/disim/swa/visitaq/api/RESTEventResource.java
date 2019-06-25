@@ -86,11 +86,32 @@ public class RESTEventResource {
 		}
 	}
 	
+	@GET
+	@Path("/idCategory/{categoryId}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response getEventsByCategory(
+			@PathParam("token") String token, 
+			@PathParam("categoryId") Long categoryId) {
+		
+		try {
+			if(accountService.checkSession(token)) {
+				List<Event> events = eventService.selectEventsByCategory(categoryId);
+				
+				return Response.ok(events).build();
+			}else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
 	@POST
 	@Path("/add")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response insertAttraction(@PathParam("token") String token, Event event, @Context UriInfo uriInfo) {
+	public Response insertEvent(@PathParam("token") String token, Event event, @Context UriInfo uriInfo) {
 		try {
 			if(accountService.checkSession(token)) {
 				Event newEvent = eventService.insertEvent(event);
@@ -108,7 +129,7 @@ public class RESTEventResource {
 	@DELETE
 	@Path("/delete/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
-	public Response deleteAttraction(@PathParam("id") Long id, @PathParam("token") String token, Event event) {
+	public Response deleteEvent(@PathParam("id") Long id, @PathParam("token") String token, Event event) {
 		try {
 			if(accountService.checkSession(token)) {
 				eventService.deleteEvent(id, event);
@@ -125,7 +146,7 @@ public class RESTEventResource {
 	@Path("/update/{id}")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response updateAttraction(@PathParam("id") Long id, @PathParam("token") String token, @Context UriInfo uriInfo, Event event) {
+	public Response updateEvent(@PathParam("id") Long id, @PathParam("token") String token, @Context UriInfo uriInfo, Event event) {
 
 		if (event == null) {
 			return Response.status(Status.BAD_REQUEST).build();

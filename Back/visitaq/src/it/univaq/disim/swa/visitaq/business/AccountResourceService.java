@@ -1,5 +1,7 @@
 package it.univaq.disim.swa.visitaq.business;
 
+import java.util.List;
+
 import it.univaq.disim.swa.visitaq.domain.Session;
 import it.univaq.disim.swa.visitaq.domain.User;
 
@@ -16,4 +18,8 @@ public interface AccountResourceService {
 	void logoutUser(String token) throws VisitaqBusinessException;
 
 	Boolean checkSession(String token) throws VisitaqBusinessException;
+
+	List<User> selectAllUsers() throws VisitaqBusinessException;
+
+	User selectUserByEmail(String email) throws VisitaqBusinessException;
 }

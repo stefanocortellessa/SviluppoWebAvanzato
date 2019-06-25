@@ -362,4 +362,61 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 			}
 		}
 	}
+	
+	@Override
+	public List<Attraction> selectAttractionsByCategory(Long id) {
+
+		PreparedStatement sql = null;
+		Connection connection = null;
+		List<Attraction> response = new ArrayList<Attraction>();
+		
+		String query = "SELECT * FROM attractions WHERE id_category=?";
+		
+		try {
+
+			connection = this.getConnection(connection);
+			connection.setAutoCommit(false);
+			
+			sql = connection.prepareStatement(query);
+
+			sql.setLong(1, id);
+
+			ResultSet rs = sql.executeQuery();
+			
+			while(rs.next()) {
+				
+				Attraction attraction = new Attraction();
+				Category category = new Category();
+				User creator = new User();
+				
+				attraction.setId(rs.getLong("id"));
+				attraction.setName(rs.getString("name"));
+				attraction.setLocality(rs.getString("locality"));
+				
+				category.setId(rs.getLong("id_category"));
+				attraction.setCategory(category);
+				creator.setId(rs.getLong("id_creator"));
+				attraction.setCreator(creator);
+				
+				attraction.setLat(rs.getString("lat"));
+				attraction.setLng(rs.getString("lng"));
+				attraction.setDescription(rs.getString("description"));
+				attraction.setImage(rs.getString("image"));
+				
+				response.add(attraction);		
+			}
+			rs.close(); 
+			
+			return response;
+		} catch (SQLException e) {
+			return response;
+		}finally {
+			if (sql != null) {
+				try {
+					sql.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
 }

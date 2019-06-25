@@ -17,4 +17,6 @@ public interface AttractionResourceService {
 	List<Attraction> selectAttractions() throws VisitaqBusinessException;
 
 	List<Attraction> selectAttractionsByUser(Long id) throws VisitaqBusinessException;
+
+	List<Attraction> selectAttractionsByCategory(Long id) throws VisitaqBusinessException;
 }

@@ -21,7 +21,7 @@ $(document).ready( function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/events/",
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/events",
             success: function(data) { 
 
                 var events = JSON.parse(JSON.stringify(data));
@@ -70,7 +70,7 @@ $(document).ready( function () {
             }, 
             type: "GET",
             dataType: 'json',
-            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/attractions/",
+            url: "http://localhost:8080/visitaq/api/users/" + localStorage.getItem('token') + "/attractions",
             success: function(data) { 
 
                 var attractions = JSON.parse(JSON.stringify(data));

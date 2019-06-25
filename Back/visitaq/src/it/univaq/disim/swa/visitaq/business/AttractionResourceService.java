@@ -8,7 +8,7 @@ public interface AttractionResourceService {
 
 	Attraction insertAttraction(Attraction attraction) throws VisitaqBusinessException;
 
-	void deleteAttraction(Long id, Attraction attraction) throws VisitaqBusinessException;
+	Boolean deleteAttraction(Long id, Attraction attraction) throws VisitaqBusinessException;
 
 	Attraction updateAttraction(Attraction attraction, Long id) throws VisitaqBusinessException;
 	

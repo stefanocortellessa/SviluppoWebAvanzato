@@ -100,11 +100,13 @@ public class EventResourceServiceImpl implements EventResourceService {
 	}
 
 	@Override
-	public void deleteEvent(Long id, Event event) throws VisitaqBusinessException {
+	public Boolean deleteEvent(Long id, Event event) throws VisitaqBusinessException {
 		
 		PreparedStatement ps = null;
 		Connection connection = null;
+		
 		Utility utility = new Utility();
+		Boolean response = false;
 		String query = "DELETE FROM events WHERE id = ?";
 		
 		try {
@@ -119,7 +121,13 @@ public class EventResourceServiceImpl implements EventResourceService {
 				ps = connection.prepareStatement(query);
 				ps.setLong(1, id);
 				
-				ps.executeUpdate();
+				if(ps.executeUpdate() == 1) {
+					response = true;
+					//System.out.println("User deleted successfully!");
+				}else {
+					response = false;
+					//System.out.println("User NOT deleted");
+				}
 			} else {
 				
 				//System.out.println("Event NOT Deleted: user is NOT its creator");
@@ -143,6 +151,7 @@ public class EventResourceServiceImpl implements EventResourceService {
 				}
 			}
 		}
+		return response;
 	}
 
 	@Override

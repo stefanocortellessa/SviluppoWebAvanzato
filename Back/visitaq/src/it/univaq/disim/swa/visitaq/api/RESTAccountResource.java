@@ -55,7 +55,11 @@ public class RESTAccountResource {
 			if(accountService.checkSession(token)) {
 				User user = accountService.selectUserByEmail(email);
 				
-				return Response.ok(user).build();
+				if (user.getEmail() != null) {
+					return Response.ok(user).build();
+				} else {
+					return Response.noContent().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -86,9 +90,12 @@ public class RESTAccountResource {
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Response logout(@PathParam("token") String token) {
 		try {
-			accountService.logoutUser(token);
-			
-			return Response.noContent().build();
+			Boolean response =accountService.logoutUser(token);
+			if(response) {
+				return Response.noContent().build();
+			} else {
+				return Response.ok().build();
+			}
 		} catch (VisitaqBusinessException e) {
 			throw new VisitaqWebApplicationException("Errore interno al server");
 		}
@@ -98,11 +105,11 @@ public class RESTAccountResource {
 	@Path("/login")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response loginUser(User user) {
+	public Response loginUser(@Context UriInfo context, User user) {
 		try {
 			Session userToken = accountService.loginUser(user);
 			
-			if(userToken != null) {
+			if(userToken.getToken() != null) {
 				return Response.ok(userToken.getToken()).status(201).build();
 	        } else {
 	            return Response.status(Status.FORBIDDEN).build();
@@ -118,8 +125,12 @@ public class RESTAccountResource {
 	public Response deleteUser(@PathParam("id") Long id, @PathParam("token") String token) {
 		try {
 			if(accountService.checkSession(token)) {
-				accountService.deleteUser(id);
-				return Response.noContent().build();
+				Boolean response = accountService.deleteUser(id);
+				if(response) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -142,8 +153,13 @@ public class RESTAccountResource {
 		}
 		try {
 			if(accountService.checkSession(token)) {
-				accountService.updateUser(user, id);
-				return Response.noContent().build();
+				User response = accountService.updateUser(user, id);
+				
+				if(response.getEmail() != null) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}

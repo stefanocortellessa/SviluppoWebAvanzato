@@ -55,8 +55,11 @@ public class RESTEventResource {
 		try {
 			if(accountService.checkSession(token)) {
 				Event event = eventService.selectEventDetail(id);
-				
-				return Response.ok(event).build();
+				if(event.getId() != null) {
+					return Response.ok(event).build();
+				} else {
+					return Response.noContent().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -115,7 +118,7 @@ public class RESTEventResource {
 			if(accountService.checkSession(token)) {
 				Event newEvent = eventService.insertEvent(event);
 				
-				if(newEvent != null) {
+				if(newEvent.getId() != null) {
 					
 					URI Uri = uriInfo.getAbsolutePathBuilder().path(newEvent.getTitle().toString()).build();
 
@@ -138,8 +141,13 @@ public class RESTEventResource {
 		try {
 			if(accountService.checkSession(token)) {
 				
-				eventService.deleteEvent(id, event);
-				return Response.noContent().build();
+				Boolean response = eventService.deleteEvent(id, event);
+				
+				if(response) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -162,8 +170,13 @@ public class RESTEventResource {
 		}
 		try {
 			if(accountService.checkSession(token)) {
-				eventService.updateEvent(event, id);
-				return Response.noContent().build();
+				Event response = eventService.updateEvent(event, id);
+				
+				if(response.getId() != null) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}

@@ -114,11 +114,12 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	}
 	
 	@Override
-	public void deleteUser(Long id) throws VisitaqBusinessException {
+	public Boolean deleteUser(Long id) throws VisitaqBusinessException {
 
 		Connection connection = null;
 		PreparedStatement ps = null;
 	
+		Boolean response = false;
 		String deleteSql = "DELETE FROM users WHERE id = ?";
 		
 		try {
@@ -129,8 +130,10 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			ps.setLong(1, id);
 			
 			if(ps.executeUpdate() == 1) {
+				response = true;
 				//System.out.println("User deleted successfully!");
 			}else {
+				response = false;
 				//System.out.println("User NOT deleted");
 			}
 		} catch (SQLException e) {
@@ -152,6 +155,7 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 				}
 			}
 		}
+		return response;
 	}
 	
 	@Override
@@ -274,11 +278,12 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 	}
 	
 	@Override
-	public void logoutUser(String token) throws VisitaqBusinessException {
+	public Boolean logoutUser(String token) throws VisitaqBusinessException {
 
 		Connection connection = null;
 		PreparedStatement ps = null;
 		
+		Boolean response = false;
 		String sql = "DELETE FROM sessions WHERE token = ?";
 
 		try {			
@@ -288,8 +293,10 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 			ps.setString(1, token);
 			
 			if(ps.executeUpdate() == 1) {
+				response = true;
 				//System.out.println("Logout Success");
 			} else {
+				response = false;
 				//System.out.println("Logout went Wrong");
 			}
 		} catch (SQLException e) {
@@ -308,6 +315,7 @@ public class AccountResourceServiceImpl implements AccountResourceService {
 				} catch (SQLException e) {}
 			}
 		}
+		return response;
 	}
 	
 	@Override

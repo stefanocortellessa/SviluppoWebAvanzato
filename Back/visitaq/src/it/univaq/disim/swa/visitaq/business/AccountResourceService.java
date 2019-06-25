@@ -9,13 +9,13 @@ public interface AccountResourceService {
 	 
 	Boolean insertUser(User user) throws VisitaqBusinessException;
 
-	void deleteUser(Long id) throws VisitaqBusinessException;
+	Boolean deleteUser(Long id) throws VisitaqBusinessException;
 
 	User updateUser(User user, Long id) throws VisitaqBusinessException;
 
 	Session loginUser(User user) throws VisitaqBusinessException;
 
-	void logoutUser(String token) throws VisitaqBusinessException;
+	Boolean logoutUser(String token) throws VisitaqBusinessException;
 
 	Boolean checkSession(String token) throws VisitaqBusinessException;
 

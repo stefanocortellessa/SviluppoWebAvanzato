@@ -90,12 +90,13 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 	}
 
 	@Override
-	public void deleteAttraction(Long attractionId, Attraction attraction) throws VisitaqBusinessException {
+	public Boolean deleteAttraction(Long attractionId, Attraction attraction) throws VisitaqBusinessException {
 
 		PreparedStatement ps = null;
 		Connection connection = null;
 		
 		Utility utility = new Utility();
+		Boolean response = false;
 		String query = "DELETE FROM attractions WHERE id = ?";
 		
 		try {
@@ -108,7 +109,14 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				ps = connection.prepareStatement(query);
 				
 				ps.setLong(1, attractionId);
-				ps.executeUpdate();
+				
+				if(ps.executeUpdate() == 1) {
+					response = true;
+					//System.out.println("User deleted successfully!");
+				}else {
+					response = false;
+					//System.out.println("User NOT deleted");
+				}
 				//System.out.println("Attraction Deleted");
 			} else {
 				//System.out.println("Attraction not Deleted : user is not its creator");
@@ -132,6 +140,7 @@ public class AttractionResourceServiceImpl implements AttractionResourceService 
 				}
 			}
 		}
+		return response;
 	}
 	
 	@Override

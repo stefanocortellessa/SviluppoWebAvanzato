@@ -8,7 +8,7 @@ public interface EventResourceService {
 
 	Event insertEvent(Event attraction) throws VisitaqBusinessException;
 
-	void deleteEvent(Long id, Event attraction) throws VisitaqBusinessException;
+	Boolean deleteEvent(Long id, Event attraction) throws VisitaqBusinessException;
 
 	Event updateEvent(Event attraction, Long id) throws VisitaqBusinessException;
 	

@@ -115,7 +115,7 @@ public class RESTAttractionResource {
 			if(accountService.checkSession(token)) {
 				Attraction newAttraction = attractionService.insertAttraction(attraction);
 				
-				if(newAttraction != null) {
+				if(newAttraction.getId() != null) {
 					URI Uri = uriInfo.getAbsolutePathBuilder().path(newAttraction.getName().toString()).build();
 					return Response.created(Uri).build();
 				} else {
@@ -135,8 +135,13 @@ public class RESTAttractionResource {
 	public Response deleteAttraction(@PathParam("id") Long id, @PathParam("token") String token, Attraction attraction) {
 		try {
 			if(accountService.checkSession(token)) {
-				attractionService.deleteAttraction(id, attraction);
-				return Response.noContent().build();
+				Boolean response = attractionService.deleteAttraction(id, attraction);
+				
+				if(response) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}	
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
@@ -162,8 +167,13 @@ public class RESTAttractionResource {
 		}
 		try {	
 			if(accountService.checkSession(token)) {
-				attractionService.updateAttraction(attraction, id);
-				return Response.noContent().build();
+				Attraction attract = attractionService.updateAttraction(attraction, id);
+				
+				if(attract.getId() != null) {
+					return Response.noContent().build();
+				} else {
+					return Response.ok().build();
+				}
 			} else {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}

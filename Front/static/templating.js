@@ -50,12 +50,14 @@ $(document).ready( function () {
                     $("#events").append(h1);
                 }
             },
-            error: function(x, m) {
-                console.log(x);
-                console.log(m);
-                alert('error!');
-
-                home();
+            error: function(jqXHR, textStatus, errorThrown) {
+	            
+            	if(jqXHR.status == 401){
+            		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
+		        	homeLogin();
+            	}else{
+            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            	}
             }
         });
     };
@@ -99,12 +101,14 @@ $(document).ready( function () {
                     $("#attractions").append(h1);
                 }
             },
-            error: function(x, m) {
-                console.log(x);
-                console.log(m);
-                alert('error!');
-
-                home();
+            error: function(jqXHR, textStatus, errorThrown) {
+	            
+            	if(jqXHR.status == 401){
+            		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
+		        	homeLogin();
+            	}else{
+            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            	}
             }
         });
     };
@@ -184,12 +188,14 @@ $(document).ready( function () {
                 $("#choice").show();
                 $("#logout").show();
             },
-            error: function(x, m) {
-                console.log(x);
-                console.log(m);
-                alert('Sicuro di essere registrato? E-mail o Password non sono corrette!');
-
-                homeLogin();
+            error: function(jqXHR, textStatus, errorThrown) {
+	            
+            	if(jqXHR.status == 403){
+            		alert('Sicuro di essere registrato? E-mail o Password non sono corrette.');
+		        	homeLogin();
+            	}else{
+            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            	}
             }
         });
         return false;
@@ -251,12 +257,47 @@ $(document).ready( function () {
                     }
                 }      
             },
-            error: function(x, m) {
-                console.log(x);
-                console.log(m);
-                alert('E-mail già registrata! Provane una diversa..');
+            error: function(jqXHR, textStatus, errorThrown) {
+	            
+            	if(jqXHR.status == 403){
+            		alert('Qualcosa è andato storto.. Riprova!');
+            	}else{
+            		alert("Errore: " + jqXHR.status);
+            	}
+            }
+        });
+        return false;
+    });
 
-                homeRegistrazione();
+    //azione quando si clicca sul logo
+    $("#logo").click(function() {
+
+    	console.log("URL: http://localhost:8080/visitaq/api/users/auth/" + localStorage.getItem('token'));
+
+    	$.ajax( { 
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            },
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8080/visitaq/api/users/auth/" + localStorage.getItem('token'),
+            success: function(data) { 
+
+                $("#Detail").hide();
+		        $("#attractions").hide();
+		        $("#events").hide();
+		        $("#choice").show(); 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+	            
+            	if(jqXHR.status == 401){
+            		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
+		        	homeLogin();
+            	}else{
+            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            	}
             }
         });
         return false;
@@ -291,15 +332,6 @@ $(document).ready( function () {
         $("#BottoneRegistrazione").show();
         $("#WelcomeDescription").show();
     };
-
-    //azione quando si clicca sul logo
-    $("#logo").click(function() {
-
-        $("#Detail").hide();
-        $("#attractions").hide();
-        $("#events").hide();
-        $("#choice").show(); 
-    });
 
     //azione quando si clicca sul Bottone Login
     $("#LoginButton").click(function() {

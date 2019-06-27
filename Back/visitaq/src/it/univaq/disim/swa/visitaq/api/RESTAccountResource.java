@@ -85,6 +85,23 @@ public class RESTAccountResource {
 		}
 	}
 	
+	@POST
+	@Path("/auth/{token}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Response checkSession(User user, @PathParam("token") String token) {
+		try {
+			Boolean responseMessage = accountService.checkSession(token);
+			if(responseMessage) {
+				return Response.ok(responseMessage).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}	
+		} catch (VisitaqBusinessException e) {
+			throw new VisitaqWebApplicationException("Errore interno al server");
+		}
+	}
+	
 	@DELETE
 	@Path("/logout/{token}")
 	@Consumes({MediaType.APPLICATION_JSON})

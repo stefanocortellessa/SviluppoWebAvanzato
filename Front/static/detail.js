@@ -53,10 +53,14 @@ function eventDetail(eventId) {
 
             $("#map").show();
         },
-        error: function(x, m) {
-            console.log(x);
-            console.log(m);
-            alert('error!');
+        error: function(jqXHR, textStatus, errorThrown) {
+
+            if(jqXHR.status == 401){
+                alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
+                home();
+            }else{
+                alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            }
         }
     });
 }
@@ -111,10 +115,28 @@ function attractionDetail(attractionId) {
 
             $("#map").show();                
         },
-        error: function(x, m) {
-            console.log(x);
-            console.log(m);
-            alert('error!');
-        }
+        error: function(jqXHR, textStatus, errorThrown) {
+                
+                if(jqXHR.status == 401){
+                    alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
+                    home();
+                }else{
+                    alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+                }
+            }
     });
+
+    var home = function(){
+        $("#events").hide(); 
+        $("#Detail").hide();
+        $("#choice").hide();
+        $("#attractions").hide();
+        $("#logout").hide();
+        $("#BottoneRegistrazione").hide();
+        $("#LoginForm").hide();
+
+        $("#LoginForm").show();
+        $("#BottoneRegistrazione").show();
+        $("#WelcomeDescription").show();
+    };
 }

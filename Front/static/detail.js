@@ -59,7 +59,7 @@ function eventDetail(eventId) {
                 alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
                 home();
             }else{
-                alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+                alert("Qualcosa è andato storto..");
             }
         }
     });
@@ -121,7 +121,7 @@ function attractionDetail(attractionId) {
                     alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
                     home();
                 }else{
-                    alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+                    alert("Qualcosa è andato storto..");
                 }
             }
     });

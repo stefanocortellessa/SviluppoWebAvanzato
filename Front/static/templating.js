@@ -56,7 +56,7 @@ $(document).ready( function () {
             		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
 		        	homeLogin();
             	}else{
-            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            		alert("Qualcosa è andato storto..");
             	}
             }
         });
@@ -107,7 +107,7 @@ $(document).ready( function () {
             		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
 		        	homeLogin();
             	}else{
-            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            		alert("Qualcosa è andato storto..");
             	}
             }
         });
@@ -194,7 +194,7 @@ $(document).ready( function () {
             		alert('Sicuro di essere registrato? E-mail o Password non sono corrette.');
 		        	homeLogin();
             	}else{
-            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            		alert("Qualcosa è andato storto..");
             	}
             }
         });
@@ -262,7 +262,7 @@ $(document).ready( function () {
             	if(jqXHR.status == 403){
             		alert('Qualcosa è andato storto.. Riprova!');
             	}else{
-            		alert("Errore: " + jqXHR.status);
+            		alert("Qualcosa è andato storto..");
             	}
             }
         });
@@ -296,7 +296,7 @@ $(document).ready( function () {
             		alert('Non Hai effetuato il login! Inserisci le tue credenziali!');
 		        	homeLogin();
             	}else{
-            		alert("Qualcosa è andato storto.. errore: " + jqXHR.status);
+            		alert("Qualcosa è andato storto..");
             	}
             }
         });
